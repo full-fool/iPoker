@@ -76,7 +76,7 @@ bool HelloWorld::init()
     
 	auto label = LabelTTF::create("iPoker", "Arial", 72);
 	label->setAnchorPoint(Point(0,1));
-	label->setPosition(30,760);
+	label->setPosition(30,700);
 	this->addChild(label);
 
 
@@ -119,6 +119,7 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::toGameScene(Ref* pSender)
 {
+	log("New game");
 	auto gameScene = GameScene::createScene();
 	auto animation = TransitionFlipX::create(1, gameScene);
 	Director::getInstance()->replaceScene(animation);

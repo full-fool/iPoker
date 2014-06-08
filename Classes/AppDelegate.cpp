@@ -13,8 +13,8 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
-	float width = 480;
-	float height = 800;
+	float width = 576;
+	float height = 768;
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {

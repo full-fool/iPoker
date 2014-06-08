@@ -34,7 +34,7 @@ bool GameScene::init()
 
 	auto cardBack = Sprite::create("cardback.png");
 	cardBack->setAnchorPoint(Point(1.0,0.0));
-	cardBack->setPosition(40,775);
+	cardBack->setPosition(40,730);
 	cardBack->setRotation(-45.0);
 
 	this->addChild(cardBack);
@@ -46,7 +46,7 @@ bool GameScene::init()
 	cardBackListener->onTouchBegan = [=](Touch* touch, Event* e){
 
 		Point p = touch->getLocation();
-		if(p.x <= 27 && p.y >= 762){
+		if(p.x <= 27 && p.y >= 720){
 			auto fade = FadeIn::create(2);
 			auto selectedCard = Sprite::create("clubs_jack.png");
 			selectedCard->setAnchorPoint(Point(0,0));
