@@ -1,22 +1,21 @@
-#include "PokerDeck.h"
+#include "Poker.h"
 #include <algorithm>
 
 void PokerDeck::shuffle(){
-	std::random_shuffle(cards.begin, cards.end);
+	std::random_shuffle(cards.begin(), cards.end());
 }
 
 void PokerDeck::sort(){
-	std::sort(cards.begin, cards.end, [=](const PokerCard*& left, const PokerCard*& right){
-		return left->compareWithOtherCard(right) <= 0;
-	});
+	std::sort(cards.begin(), cards.end(), comparePointerToCard);
 	return;
 }
 
 PokerCard* PokerDeck::getCardAtIndex(int index)
 {
+	int size = cards.size();
 	if(index < 0)
-		index = cards.size - index;
-	if (index < 0 || index >= cards.size)
+		index = size - index;
+	if (index < 0 || index >= size)
 		return NULL;
 	else
 		return cards[index];
@@ -24,13 +23,13 @@ PokerCard* PokerDeck::getCardAtIndex(int index)
 
 bool PokerDeck::insertCardatIndex(PokerCard* card, int index)
 {
-
+	int size =cards.size();
 	card->deck = this;
 	card->faceUp = this->faceUp;
 
 	if (index < 0)
-		index = cards.size - index;
-	if (index < 0 || index > cards.size)
+		index = size - index;
+	if (index < 0 || index > size)
 		return false;
 	cards.insert(cards.begin() + index, card);
 	return true;
@@ -39,10 +38,11 @@ bool PokerDeck::insertCardatIndex(PokerCard* card, int index)
 
 PokerCard* PokerDeck::remoeCardAtIndex(int index)
 {
+	int size = cards.size();
 	if(index < 0)
-		index = cards.size - index;
+		index = size - index;
 
-	if (index < 0 || index >= cards.size())
+	if (index < 0 || index >= size)
 		return NULL;
 
 	PokerCard* card = getCardAtIndex(index);
@@ -60,7 +60,7 @@ void PokerDeck::removeCard(PokerCard* card)
 std::string toJSONString(){
 	//TODO: here
 	return "";
-};
+}
 
 bool PokerDeck::isEmpty(){
 	return cards.empty();

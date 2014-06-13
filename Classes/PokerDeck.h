@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "PokerPlayer.h"
-#include "PokerCard.h"
+
+class PokerPlayer;
 
 class PokerDeck{
 public:

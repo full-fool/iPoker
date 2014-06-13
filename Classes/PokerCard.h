@@ -2,20 +2,20 @@
 #define __POKER_CARD_H__
 
 #include <string>
-#include "PokerDeck.h"
 
 
-typedef enum{
+
+enum PokerCardSuit{
 	// Different from Original
 	CardSuitDiamond = 0,
     CardSuitClub,
 	CardSuitHeart,
     CardSuitSpade
 
-} PokerCardSuit;
+};
 
 
-typedef enum {
+enum PokerCardRank{
     CardRankA = 1,
     CardRank2,
     CardRank3,
@@ -31,7 +31,10 @@ typedef enum {
     CardRankK,
     CardRankJokerSmall,
     CardRankJokerBig
-} PokerCardRank;
+} ;
+
+
+class PokerDeck;
 
 class PokerCard{
 public:
@@ -53,7 +56,8 @@ public:
 	bool faceUp;
 
 	// Deck that the card belongs to. CANNOT be null.
-	PokerDeck* deck;
+	PokerDeck *deck;
+	
 
 	//////////////////////////////////////
 	// Member Function
@@ -67,11 +71,11 @@ public:
 	// -1 = NSOrderedAscending = this card lower
 	// 0  = NSOrderedSame = same
 	// 1  = NSOrderedDescending = this card higher
-	int compareWithOtherCard(const PokerCard* otherCard) const;
+	int compareWithOtherCard(const PokerCard*& otherCard) const;
 	std::string toJSONString();
 	
 };
 
-
+bool comparePointerToCard(const PokerCard* left, const PokerCard* right);
 
 #endif

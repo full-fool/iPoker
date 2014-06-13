@@ -1,11 +1,10 @@
-#include "PokerCard.h"
-
+#include "Poker.h"
 void PokerCard::flip()
 {
 	this->faceUp = !this->faceUp;
 }
 
-int PokerCard::compareWithOtherCard(const PokerCard* otherCard) const
+int PokerCard::compareWithOtherCard(const PokerCard*& otherCard) const
 {
 	// Different from orginal?
 	if (this->rank == otherCard->rank){
@@ -23,7 +22,8 @@ int PokerCard::compareWithOtherCard(const PokerCard* otherCard) const
 	}
 }
 
-std::string PokerCard::toJSONString(){
+std::string PokerCard::toJSONString()
+{
 	// TODO: Format of card representation?
 	// TODO: Generate string in C++
 	return "";
@@ -33,4 +33,8 @@ bool PokerCard::isFaceUp(){
 	return faceUp;
 }
 
+bool comparePointerToCard(const PokerCard* left, const PokerCard* right)
+{
+	return left->compareWithOtherCard(right) <= 0;
+}
 
