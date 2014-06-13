@@ -35,6 +35,11 @@ typedef enum {
 
 class PokerCard{
 public:
+	//////////////////////////////
+	// Member Variables
+	/////////////////////////////
+
+
 	// ID of card
 	std::string ID;
 
@@ -50,14 +55,23 @@ public:
 	// Deck that the card belongs to. CANNOT be null.
 	PokerDeck* deck;
 
+	//////////////////////////////////////
+	// Member Function
+	////////////////////////////////////
+
+
+	bool isFaceUp();
+
 	void flip();
 
 	// -1 = NSOrderedAscending = this card lower
 	// 0  = NSOrderedSame = same
 	// 1  = NSOrderedDescending = this card higher
-	int compareWithOtherCard(PokerCard& otherCard);
+	int compareWithOtherCard(const PokerCard* otherCard) const;
 	std::string toJSONString();
 	
 };
+
+
 
 #endif

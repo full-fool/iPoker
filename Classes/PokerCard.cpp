@@ -5,18 +5,18 @@ void PokerCard::flip()
 	this->faceUp = !this->faceUp;
 }
 
-int PokerCard::compareWithOtherCard(PokerCard& otherCard)
+int PokerCard::compareWithOtherCard(const PokerCard* otherCard) const
 {
 	// Different from orginal?
-	if (this->rank == otherCard.rank){
-		if (this->suit < otherCard.suit)
+	if (this->rank == otherCard->rank){
+		if (this->suit < otherCard->suit)
 			return -1;
-		else if (this->suit == otherCard.suit)
+		else if (this->suit == otherCard->suit)
 			return 0;
 		else
 			return 1;
 	} else {
-		if (this->rank < otherCard.rank)
+		if (this->rank < otherCard->rank)
 			return -1;
 		else
 			return 1;
@@ -26,4 +26,11 @@ int PokerCard::compareWithOtherCard(PokerCard& otherCard)
 std::string PokerCard::toJSONString(){
 	// TODO: Format of card representation?
 	// TODO: Generate string in C++
+	return "";
 }
+
+bool PokerCard::isFaceUp(){
+	return faceUp;
+}
+
+
