@@ -8,6 +8,12 @@
 class PokerDeck;
 
 class PokerPlayer: public PokerBase{
+
+public:
+
+	PokerPlayer();
+
+	PokerPlayer(std::string ID, std::string name);
 	//ID of player
 	std::string ID;
 

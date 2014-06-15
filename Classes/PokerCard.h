@@ -5,33 +5,32 @@
 #include "PokerBase.h"
 
 
-enum PokerCardSuit: public PokerBase{
-	// Different from Original
-	CardSuitDiamond = 0,
-    CardSuitClub,
-	CardSuitHeart,
-    CardSuitSpade
 
-};
+// Different from Original
+const int CardSuitDiamond = 0;
+const int CardSuitClub = 1;
+const int CardSuitHeart = 2;
+const int CardSuitSpade = 3;
 
 
-enum PokerCardRank{
-    CardRankA = 1,
-    CardRank2,
-    CardRank3,
-    CardRank4,
-    CardRank5,
-    CardRank6,
-    CardRank7,
-    CardRank8,
-    CardRank9,
-    CardRank10,
-    CardRankJ,
-    CardRankQ,
-    CardRankK,
-    CardRankJokerSmall,
-    CardRankJokerBig
-} ;
+
+
+const int CardRankA = 1;
+const int CardRank2 = 2;
+const int CardRank3 = 3;
+const int CardRank4 = 4;
+const int CardRank5 = 5;
+const int CardRank6 = 6;
+const int CardRank7 = 7;
+const int CardRank8 = 8;
+const int CardRank9 = 9;
+const int CardRank10 =10 ;
+const int CardRankJ = 11;
+const int CardRankQ = 12;
+const int CardRankK = 13;
+const int CardRankJokerSmall = 14;
+const int CardRankJokerBig = 15;
+
 
 
 class PokerDeck;
@@ -47,10 +46,10 @@ public:
 	std::string ID;
 
 	// Rank of card
-	PokerCardRank rank;
+	int rank;
 
 	// Suit of card
-	PokerCardSuit suit;
+	int suit;
 
 	// True for face up, false for down
 	bool faceUp;

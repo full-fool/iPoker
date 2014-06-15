@@ -1,5 +1,16 @@
 #include "Poker.h"
 
+
+PokerPlayer::PokerPlayer()
+{
+}
+
+PokerPlayer::PokerPlayer(std::string _ID, std::string _name)
+{
+	this->ID = _ID;
+	this->name = _name;
+}
+
 void PokerPlayer::selectCards(PokerCard *card)
 {
 	selectedCards.insert(selectedCards.end()-1, card);

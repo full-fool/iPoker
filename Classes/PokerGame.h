@@ -53,7 +53,7 @@ public:
 	////// DOWN -	ZHENGDIAO
 	/////	XIAO PINGGUO
 	/////////////////////////////
-	void didInitWithDictionary( std::map<std::string, std::vector<PokerBase*>>);
+	void didInitWithDictionary( std::map<std::string, std::vector<std::string>>);
 	void didAllocPID(std::string message);
 	void didPlayerMoveCardToDeckAtIndex(PokerPlayer* player, PokerCard* card, PokerDeck* deck, int index);
 	void didPlayerShuffleDeck(PokerPlayer* player, PokerDeck* deck);
