@@ -3,8 +3,11 @@
 
 #include <string>
 #include <vector>
+#include "PokerBase.h"
+
 class PokerDeck;
-class PokerPlayer{
+
+class PokerPlayer: public PokerBase{
 	//ID of player
 	std::string ID;
 

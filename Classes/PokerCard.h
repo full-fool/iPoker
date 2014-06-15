@@ -2,10 +2,10 @@
 #define __POKER_CARD_H__
 
 #include <string>
+#include "PokerBase.h"
 
 
-
-enum PokerCardSuit{
+enum PokerCardSuit: public PokerBase{
 	// Different from Original
 	CardSuitDiamond = 0,
     CardSuitClub,

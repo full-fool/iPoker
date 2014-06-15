@@ -3,10 +3,11 @@
 
 #include <string>
 #include <vector>
+#include "PokerBase.h"
 
 class PokerPlayer;
 
-class PokerDeck{
+class PokerDeck: public PokerBase{
 public:
 	//////////////////////////////
 	// Member Variables

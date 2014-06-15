@@ -6,5 +6,10 @@
 #include "PokerCard.h"
 #include "PokerPlayer.h"
 #include "PokerDeck.h"
+#include "PokerGame.h"
+#include "PokerBase.h"
+
+#include "ServerManager.h"
+#include "ClientManager.h"
 
 #endif
