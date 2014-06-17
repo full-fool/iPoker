@@ -46,6 +46,7 @@ public:
 	void didClientReceiveMessage(std::string message);
 
 	PokerPlayer* allocPlayer();
+	bool isValidMove(std::string message);
 
 
 	//////////////////////////////////////////////

@@ -4,8 +4,11 @@
 #include "PokerBase.h"
 #include <string>
 
-class PokerString: public PokerBase, public: std::string{
-
+class PokerString: public PokerBase{
+	public:
+	std::string pokerString;
+	
+	PokerString(std::string );
 };
 
 #endif

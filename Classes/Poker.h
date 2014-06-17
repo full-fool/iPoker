@@ -8,6 +8,9 @@
 #include "PokerDeck.h"
 #include "PokerGame.h"
 #include "PokerBase.h"
+#include "PokerString.h"
+#include "PokerInteger.h"
+#include "PokerVectorPoint.h"
 
 #include "ServerManager.h"
 #include "ClientManager.h"

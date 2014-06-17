@@ -35,7 +35,7 @@ const int CardRankJokerBig = 15;
 
 class PokerDeck;
 
-class PokerCard{
+class PokerCard: public PokerBase{
 public:
 	//////////////////////////////
 	// Member Variables
