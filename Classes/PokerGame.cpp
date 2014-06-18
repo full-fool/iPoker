@@ -270,8 +270,65 @@ void PokerGame::didInitWithDictionary( std::map<std::string, std::vector<std::st
 		}
 
 		// Init players
+		for(i = 0; i < players.size(); i++)
+		{
+			std::string playerStr = players[i];
+			std::map<std::string, std::string> info;
+			// info = toMap(playerStr);
+			std::string ID = info["ID"];
+			std::string name = info["name"];
+			//std::vector<string> selectedCardIDs = toVector(info["selectedCards"]);
+			//std::vector<string> deckIDs = toVector(info["decks"])
+			std::vector<std::string> selectedCardIDs;
+			std::vector<std::string> deckIDs;
+			std::string pocketID = info["pocket"];
 
+			std::vector<PokerCard*> selectedCardObjects;
+			std::vector<PokerDeck*> deckObjects;
+
+			for(j = 0; j < selectedCardIDs.size(); j++)
+			{
+				selectedCardObjects.push_back(this->cards[selectedCardIDs[j]]);
+			}
+
+			for(j = 0; j < deckIDs.size(); j++ )
+			{
+				deckObjects.push_back(this->decks[deckIDs[j]]);
+			}
+			PokerDeck* pocketDeck = this->decks[pocketID];
+
+			if (ID != this->ID)
+			{
+				PokerPlayer *newPlayer = new PokerPlayer();
+				newPlayer->ID = ID;
+				newPlayer->name = name;
+				newPlayer->selectedCards = selectedCardObjects;
+				newPlayer->decks = deckObjects;
+				newPlayer->pocket = pocketDeck;
+
+				this->players.insert(std::pair<std::string, PokerPlayer*>(newPlayer->ID, newPlayer));
+			}
+			else
+			{
+				this->player->name = name;
+				this->player->selectCards = selectedCardObjects;
+				this->player->decks = deckObjects;
+				this->player->pocket = pocketDeck;
+			}
+		}
+		
 		// Update decks
+		for(i = 0; i < decks.size(); i++)
+		{
+			std::string deckStr = decks[i];
+			std::map<std::string, std::string> info;
+			// info = toMap(deckStr);
+			std::string ID = info["ID"];
+			std::string playerID = info["playerID"];
+
+			PokerDeck* deckObject = this->decks[ID];
+			deckObject->player = this->players[playerID];
+		}
 
 		// Init base deck
 		this->baseDeck = this->decks[baseDeckID[0]];
