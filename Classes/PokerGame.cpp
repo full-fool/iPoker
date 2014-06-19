@@ -41,24 +41,47 @@ PokerPlayer* PokerGame::getPlayerWithID(std::string ID)
 
 void PokerGame::moveCardToDeckAtIndex(PokerCard* card, PokerDeck* deck, int index)
 {
-	//this map's values contain two types, int and string, so I use PokerBase
-	//point to represent these two types
+	/* choice I
 	std::map<std::string, PokerBase *> dict;
 	dict.insert(std::pair<std::string, PokerBase *>("action", new PokerString("moveCard")));
 	dict.insert(std::pair<std::string, PokerBase *>("playerID", new PokerString(this->player->ID)));
 	dict.insert(std::pair<std::string, PokerBase *>("cardID", new PokerString(card->ID)));
 	dict.insert(std::pair<std::string, PokerBase *>("deckID", new PokerString(deck->ID)));
 	dict.insert(std::pair<std::string, PokerBase *>("index", new PokerInteger(index)));
+	*/
+	
+	
+	//choice II
 
+	/*
+	Json::Value root;
+	root["action"] = "moveCard";
+	root["playerID"] = this->player->ID;
+	root["cardID"] = card->ID;
+	root["deckID"] = deck->ID;
+	root["index"] = index;
+	std::string msg = root.toStyledString();
+	clientManager->clientSend(msg);
 	//std::string msg = toJSONString(dict);
 	//clientmanager->clientSend(msg);
+	*/
 }
 	
 void PokerGame::pass()
 {
+	/*choice I
 	std::map<std::string, std::string> dict;
 	dict.insert(std::pair<std::string, std::string>("action", "pass"));
 	dict.insert(std::pair<std::string, std::string>("playerID", player->ID));
+	*/
+
+	//choice II
+	/*
+	Json::Value root;
+	root["action"] = "pass";
+	root["playerID"] = player->ID;
+	std::string msg = root.toStyleString();
+	*/
 	//std::string msg = toJSONString(dict);
 	//clientManager->clientSend(msg);
 }
@@ -66,6 +89,7 @@ void PokerGame::pass()
 void PokerGame::begin()
 
 {
+	/* choice I
 	std::string msg;
 	std::map<std::string, PokerBase *>dict;
 	//try PokerBase for these three arrays, may be dangerous
@@ -75,17 +99,17 @@ void PokerGame::begin()
 
 	dict.insert(std::pair<std::string, PokerBase *>("baseDeck", new PokerString(baseDeck->ID)));
 	
-	for(std::map<std::string, PokerDeck *>::iterator iter  = this->decks.begin(); iter!= this->decks.end(); )  
+	for(std::map<std::string, PokerDeck *>::iterator iter  = this->decks.begin(); iter!= this->decks.end();iter++ )  
     {  
 		decks.push_back(iter->second);
 	}  
     
-	for(std::map<std::string, PokerPlayer *>::iterator iter = this->players.begin(); iter!= this->players.end();)
+	for(std::map<std::string, PokerPlayer *>::iterator iter = this->players.begin(); iter!= this->players.end();iter++)
 	{
 		players.push_back(iter->second);
 	}
 
-	for(std::map<std::string, PokerCard *>::iterator iter = this->cards.begin(); iter != this->cards.end();)
+	for(std::map<std::string, PokerCard *>::iterator iter = this->cards.begin(); iter != this->cards.end(); iter++)
 	{
 		cards.push_back(iter->second);
 	}
@@ -94,6 +118,37 @@ void PokerGame::begin()
 	dict.insert(std::pair<std::string, PokerBase *>("decks", new PokerVectorPoint(&decks)));
 	dict.insert(std::pair<std::string, PokerBase *>("cards", new PokerVectorPoint(&cards)));
 	dict.insert(std::pair<std::string, PokerBase *>("action", new PokerString("init")));
+	*/
+
+	//choice II
+	/*
+	Json::Value dict;
+	Json::Value decks;
+	Json::Value cards;
+	Json::Value players;
+	dict["baseDeck"] = this->baseDeck->ID;
+	for(std::map<std::string, PokerDeck *>::iterator iter  = this->decks.begin(); iter!= this->decks.end();iter++ )  
+    {  
+		decks.append(iter->second->toJSONString);
+	}  
+    
+	for(std::map<std::string, PokerPlayer *>::iterator iter = this->players.begin(); iter!= this->players.end();iter++)
+	{
+		players.append(iter->second->toJSONString);
+
+	}
+
+	for(std::map<std::string, PokerCard *>::iterator iter = this->cards.begin(); iter != this->cards.end(); iter++)
+	{
+		cards.append(iter->second->toJSONString);
+	}
+	dict["players"] = players;
+	dict["decks"] = decks;
+	dict["cards"] = cards;
+	dict["action"] = "init";
+	std::string msg = dict.toStyleString();
+	*/
+
 	//msg = toJSONString(dict);
 	//serverManager->serverBroadcast(msg);
 }
@@ -105,7 +160,7 @@ void PokerGame::reset()
 	decks.clear();
 	while(!eventQueue.empty())
 		eventQueue.pop();
-	//joinGameWithName(player->name);
+	joinGameWithName(player->name);
     
   
 	if(isServer)
@@ -142,36 +197,77 @@ void PokerGame::reset()
 
 void PokerGame::joinGameWithName(std::string name)
 {
+	/* choice I
 	std::map<std::string, std::string>dict;
 	dict.insert(std::pair<std::string, std::string>("action", "join"));
 	dict.insert(std::pair<std::string, std::string>("name", name));
+	*/
+
+	//choice II
+	/*
+	Json::Value root;
+	root["action"] = "join";
+	root["name"] = name;
+	std::string msg = root.toStyleString();
+	*/
+
+
 	//std::string msg = toJSONString(dict);
 	//clientManager->clientSend(msg);
 }
 	
 void PokerGame::shuffle(PokerDeck* deck)
 {
+	/* choice I
 	std::map<std::string, std::string>dict;
 	dict.insert(std::pair<std::string, std::string>("action", "shuffle"));
 	dict.insert(std::pair<std::string, std::string>("deckID", deck->ID));
+	*/
+
+	//choice II
+	/*
+	Json::Value root;
+	root["action"] = "shuffle";
+	root["deckID"] = deck->ID;
+	std::string msg = root.toStyleString();
+	*/
 	//std::string msg = toJSONString(dict);
 	//clientManager->clientSend(msg);
 }
 	
 void PokerGame::sort(PokerDeck* deck)
 {
+	/* choice I
 	std::map<std::string, std::string>dict;
 	dict.insert(std::pair<std::string, std::string>("action", "sort"));
 	dict.insert(std::pair<std::string, std::string>("deckID", deck->ID));
+	*/
+	/*
+	Json::Value root;
+	root["action"] = "sort";
+	root["deckID"] = deck->ID;
+	std::string msg = root.toStyleString();
+	*/
+
+
 	//std::string msg = toJSONString(dict);
 	//clientManager->clientSend(msg);
 }
 
 void PokerGame::didServerReceiveMessage(std::string message)
 {
+	/* choice I
 	std::map<std::string, std::string>dict;
 	//dict = dictionaryWithString(message);
 	std::string action = dict["action"];
+	*/
+	std::string action;
+	/*
+	Json::Value msg;
+	Json::Reader reader;
+	reader.parse(message, msg);
+	action = msg["action"];
+	*/
 	if(action == "moveCard")
 	{
 		if(!isValidMove(message))
@@ -203,10 +299,21 @@ PokerPlayer* PokerGame::allocPlayer()
 
 bool PokerGame::isValidMove(std::string message)
 {
+	/*choice I
 	std::map<std::string, std::string>dict;
 	//dict = dictionaryWithString(message);
 	std::string action = dict["action"];
 	assert(action == "moveCard");
+	*/
+
+	//choice II
+	/*
+	Json::Value dict;
+	Json::Reader reader;
+	reader.parse(message, dict);
+	std::string action = dict["action"];
+	assert(action == "moveCard");
+	
 
 	std::string cardID = dict["cardID"];
 	std::string srcDeckID = dict["srcDeckID"];
@@ -220,6 +327,8 @@ bool PokerGame::isValidMove(std::string message)
 	{
 		return FALSE;
 	}
+	*/
+	return TRUE;
 }
 
 
@@ -311,7 +420,7 @@ void PokerGame::didInitWithDictionary( std::map<std::string, std::vector<std::st
 			else
 			{
 				this->player->name = name;
-				this->player->selectCards = selectedCardObjects;
+				this->player->selectedCards = selectedCardObjects;
 				this->player->decks = deckObjects;
 				this->player->pocket = pocketDeck;
 			}

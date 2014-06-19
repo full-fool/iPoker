@@ -11,9 +11,10 @@ class JSONUtils
 public:
 	static std::string toJSONString(std::map<std::string, std::string>);
 	static std::string toJSONString(std::map<std::string, PokerBase*>);
-
+	/*
 	static std::map<std::string, std::string> toMap(std::string);
 	static std::vector<std::string> toVector(std::string);
-}
+	*/
+};
 
 #endif
