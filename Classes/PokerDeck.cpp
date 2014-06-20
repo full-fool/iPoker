@@ -1,5 +1,9 @@
 #include "Poker.h"
 #include <algorithm>
+#include "json\rapidjson.h"
+#include "json\document.h"
+#include "json\stringbuffer.h"
+#include "json\writer.h"
 
 void PokerDeck::shuffle(){
 	std::random_shuffle(cards.begin(), cards.end());
@@ -57,9 +61,19 @@ void PokerDeck::removeCard(PokerCard* card)
 		cards.erase(iter);
 }
 
-std::string toJSONString(){
-	//TODO: here
-	return "";
+std::string PokerDeck::toJSONString(){
+	rapidjson::Document document;
+	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+	rapidjson::Value dict;
+	dict.SetObject();
+	dict.AddMember("ID", this->ID.c_str(), allocator);
+	dict.AddMember("faceUp", this->faceUp, allocator);
+	dict.AddMember("playerID", this->player->ID.c_str(), allocator);
+
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	dict.Accept(writer);
+	return buffer.GetString();
 }
 
 bool PokerDeck::isEmpty(){

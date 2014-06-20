@@ -1,4 +1,9 @@
 #include "Poker.h"
+#include "json\rapidjson.h"
+#include "json\document.h"
+#include "json\stringbuffer.h"
+#include "json\writer.h"
+
 void PokerCard::flip()
 {
 	this->faceUp = !this->faceUp;
@@ -24,9 +29,24 @@ int PokerCard::compareWithOtherCard(const PokerCard*& otherCard) const
 
 std::string PokerCard::toJSONString()
 {
-	// TODO: Format of card representation?
-	// TODO: Generate string in C++
-	return "";
+
+	rapidjson::Document document;
+	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+	rapidjson::Value dict;
+	dict.SetObject();
+
+	// Note: should add int or string?
+	dict.AddMember("ID", this->ID.c_str(), allocator);
+	dict.AddMember("rank", this->rank, allocator);
+	dict.AddMember("suit", this->suit, allocator);
+	dict.AddMember("faceup", this->faceUp, allocator);
+	dict.AddMember("deckID", this->deck->ID.c_str(), allocator);
+	
+	rapidjson::StringBuffer buffer;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+	dict.Accept(writer);
+	return buffer.GetString();
+
 }
 
 bool PokerCard::isFaceUp(){
