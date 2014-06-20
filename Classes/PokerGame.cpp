@@ -267,75 +267,70 @@ bool PokerGame::isValidMove(std::string message)
 
 
 // TODO: msg -> <string, vector<string>>
-void PokerGame::didInitWithDictionary( std::map<std::string, std::vector<std::string>> entities)
+void PokerGame::didInitWithDictionary( rapidjson::Value entities)
 {
 	if(!this->isServer)
 	{
-		std::vector<std::string> decks = entities["decks"];
-		std::vector<std::string> cards = entities["cards"];
-		std::vector<std::string> players = entities["players"];
-		std::vector<std::string> baseDeckID = entities["baseDeckID"];
+		rapidjson::Value& decks = entities["decks"];
+		rapidjson::Value& cards = entities["cards"];
+		rapidjson::Value& players = entities["players"];
+		rapidjson::Value& baseDeckID = entities["baseDeckID"];
 
 		int i, j, k;
+
 		// Init decks
-		for(i = 0; i < decks.size(); i++)
+		for(i = 0; i < decks.Size(); i++)
 		{
-			std::string deckStr = decks[i];
-			// TODO: msg -> <string, string>
-			std::map<std::string, std::string> info;
-			// info = toMap(deckStr);
+
+			rapidjson::Value& info = decks[i];
 			PokerDeck* newDeck = new PokerDeck();
-			newDeck->ID = info["ID"];
-			newDeck->faceUp = info["faceUp"] == "1" ? true : false;
-			this->decks.insert(std::pair<std::string, PokerDeck*>(info["ID"], newDeck));
+			newDeck->ID = info["ID"].GetString();
+			newDeck->faceUp = info["faceUp"].GetString() == "1" ? true : false;
+			this->decks.insert(std::pair<std::string, PokerDeck*>(info["ID"].GetString(), newDeck));
 		}
 
 		// Init cards
-		for(i = 0; i < cards.size(); i++)
+		for(i = 0; i < cards.Size(); i++)
 		{
-			std::string cardStr = cards[i];
-			std::map<std::string, std::string> info;
-			// info = toMap(deckStr);
-			std::string ID = info["ID"];
-			std::string rank = info["rank"];
-			std::string suit = info["suit"];
-			std::string faceUp = info["faceUp"];
-			std::string deckID = info["deckID"];
+			rapidjson::Value& info = cards[i];
+			std::string ID = info["ID"].GetString();
+			std::string rank = info["rank"].GetString();
+			std::string suit = info["suit"].GetString();
+			std::string faceUp = info["faceUp"].GetString();
+			std::string deckID = info["deckID"].GetString();
 
 			PokerCard* newCard = new PokerCard();
 			newCard->ID = ID;
 			newCard->rank = atoi(rank.c_str());
 			newCard->suit = atoi(suit.c_str());
-			newCard->faceUp = info["faceUp"] == "1" ? true : false;
+			newCard->faceUp = info["faceUp"].GetString() == "1" ? true : false;
 			newCard->deck = this->decks[deckID];
 			this->cards.insert(std::pair<std::string, PokerCard*>(ID, newCard));
 		}
 
 		// Init players
-		for(i = 0; i < players.size(); i++)
+		for(i = 0; i < players.Size(); i++)
 		{
-			std::string playerStr = players[i];
-			std::map<std::string, std::string> info;
-			// info = toMap(playerStr);
-			std::string ID = info["ID"];
-			std::string name = info["name"];
-			//std::vector<string> selectedCardIDs = toVector(info["selectedCards"]);
-			//std::vector<string> deckIDs = toVector(info["decks"])
-			std::vector<std::string> selectedCardIDs;
-			std::vector<std::string> deckIDs;
-			std::string pocketID = info["pocket"];
+			rapidjson::Value& info = players[i];
+			std::string ID = info["ID"].GetString();
+			std::string name = info["name"].GetString();
+			rapidjson::Value& selectedCardIDs = info["selectedCards"];
+			rapidjson::Value& deckIDs = info["decks"];
+
+
+			std::string pocketID = info["pocket"].GetString();
 
 			std::vector<PokerCard*> selectedCardObjects;
 			std::vector<PokerDeck*> deckObjects;
 
-			for(j = 0; j < selectedCardIDs.size(); j++)
+			for(j = 0; j < selectedCardIDs.Size(); j++)
 			{
-				selectedCardObjects.push_back(this->cards[selectedCardIDs[j]]);
+				selectedCardObjects.push_back(this->cards[selectedCardIDs[j].GetString()]);
 			}
 
-			for(j = 0; j < deckIDs.size(); j++ )
+			for(j = 0; j < deckIDs.Size(); j++ )
 			{
-				deckObjects.push_back(this->decks[deckIDs[j]]);
+				deckObjects.push_back(this->decks[deckIDs[j].GetString()]);
 			}
 			PokerDeck* pocketDeck = this->decks[pocketID];
 
@@ -360,33 +355,33 @@ void PokerGame::didInitWithDictionary( std::map<std::string, std::vector<std::st
 		}
 		
 		// Update decks
-		for(i = 0; i < decks.size(); i++)
+		for(i = 0; i < decks.Size(); i++)
 		{
-			std::string deckStr = decks[i];
-			std::map<std::string, std::string> info;
-			// info = toMap(deckStr);
-			std::string ID = info["ID"];
-			std::string playerID = info["playerID"];
+			rapidjson::Value& info = decks[i];
+			std::string ID = info["ID"].GetString();
+			std::string playerID = info["playerID"].GetString();
 
 			PokerDeck* deckObject = this->decks[ID];
 			deckObject->player = this->players[playerID];
 		}
 
 		// Init base deck
-		this->baseDeck = this->decks[baseDeckID[0]];
+		this->baseDeck = this->decks[baseDeckID.GetString()];
 	}
 }
 
 void PokerGame::didAllocPID(std::string message)
 {
-	//TODO ! How to construct a map from string?
+
 
 	if(this->isServer)
 		return;
-	std::map<std::string, std::string> dict;
-	// dict = dictionaryWithString(message);
-	std::string name = dict["name"];
-	std::string PID= dict["PID"];
+
+	rapidjson::Document dict;
+	dict.Parse<0>(message.c_str());
+
+	std::string name = dict["name"].GetString();
+	std::string PID= dict["PID"].GetString();
 
 
 

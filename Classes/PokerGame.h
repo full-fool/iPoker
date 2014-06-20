@@ -5,6 +5,11 @@
 #include <map>
 #include <queue>
 #include "PokerBase.h"
+#include "json\rapidjson.h"
+#include "json\document.h"
+#include "json\stringbuffer.h"
+#include "json\writer.h"
+
 class PokerCard;
 class PokerDeck;
 class PokerPlayer;
@@ -49,12 +54,7 @@ public:
 	bool isValidMove(std::string message);
 
 
-	//////////////////////////////////////////////
-	////// UP -		CUIDIAO
-	////// DOWN -	ZHENGDIAO
-	/////	XIAO PINGGUO
-	/////////////////////////////
-	void didInitWithDictionary( std::map<std::string, std::vector<std::string>>);
+	void didInitWithDictionary( rapidjson::Value);
 	void didAllocPID(std::string message);
 	void didPlayerMoveCardToDeckAtIndex(PokerPlayer* player, PokerCard* card, PokerDeck* deck, int index);
 	void didPlayerShuffleDeck(PokerPlayer* player, PokerDeck* deck);
