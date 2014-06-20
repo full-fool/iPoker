@@ -1,6 +1,12 @@
 #include "Poker.h"
 #include "cocos2d.h"
 #include <stdio.h>
+#include <string>
+#include "json\rapidjson.h"
+#include "json\document.h"
+#include "json\stringbuffer.h"
+#include "json\writer.h"
+
 
 USING_NS_CC;
 
@@ -41,116 +47,78 @@ PokerPlayer* PokerGame::getPlayerWithID(std::string ID)
 
 void PokerGame::moveCardToDeckAtIndex(PokerCard* card, PokerDeck* deck, int index)
 {
-	/* choice I
-	std::map<std::string, PokerBase *> dict;
-	dict.insert(std::pair<std::string, PokerBase *>("action", new PokerString("moveCard")));
-	dict.insert(std::pair<std::string, PokerBase *>("playerID", new PokerString(this->player->ID)));
-	dict.insert(std::pair<std::string, PokerBase *>("cardID", new PokerString(card->ID)));
-	dict.insert(std::pair<std::string, PokerBase *>("deckID", new PokerString(deck->ID)));
-	dict.insert(std::pair<std::string, PokerBase *>("index", new PokerInteger(index)));
-	*/
-	
-	
-	//choice II
 
-	/*
-	Json::Value root;
-	root["action"] = "moveCard";
-	root["playerID"] = this->player->ID;
-	root["cardID"] = card->ID;
-	root["deckID"] = deck->ID;
-	root["index"] = index;
-	std::string msg = root.toStyledString();
-	clientManager->clientSend(msg);
-	//std::string msg = toJSONString(dict);
-	//clientmanager->clientSend(msg);
-	*/
+	rapidjson::Document document;     
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
+	rapidjson::Value dict;
+	dict.SetObject();
+	dict.AddMember("action", "moveCard", allocator);
+	dict.AddMember("playerID", (this->player->ID).c_str(), allocator);
+	dict.AddMember("cardID", (card->ID).c_str(), allocator);
+	dict.AddMember("deckID", (deck->ID).c_str(), allocator);
+	dict.AddMember("index", index, allocator);
+	rapidjson::StringBuffer buffer;  
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
+    dict.Accept(writer);  
+	std::string msg = buffer.GetString();
+	//clientManager->clientSend(msg);
+	
 }
 	
 void PokerGame::pass()
 {
-	/*choice I
-	std::map<std::string, std::string> dict;
-	dict.insert(std::pair<std::string, std::string>("action", "pass"));
-	dict.insert(std::pair<std::string, std::string>("playerID", player->ID));
-	*/
 
-	//choice II
-	/*
-	Json::Value root;
-	root["action"] = "pass";
-	root["playerID"] = player->ID;
-	std::string msg = root.toStyleString();
-	*/
-	//std::string msg = toJSONString(dict);
+
+	rapidjson::Document document;     
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
+	rapidjson::Value dict;
+	dict.SetObject();
+	dict.AddMember("action", "pass", allocator);
+	dict.AddMember("playerID", (player->ID).c_str(), allocator);
+	rapidjson::StringBuffer buffer;  
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
+    dict.Accept(writer);  
+	std::string msg = buffer.GetString();
 	//clientManager->clientSend(msg);
+	
 }
 
 void PokerGame::begin()
 
 {
-	/* choice I
-	std::string msg;
-	std::map<std::string, PokerBase *>dict;
-	//try PokerBase for these three arrays, may be dangerous
-	std::vector<PokerBase *>decks;
-	std::vector<PokerBase *>cards;
-	std::vector<PokerBase *>players;
+	rapidjson::Document document;     
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
+	rapidjson::Value dict;
+	rapidjson::Value decks;
+	rapidjson::Value players;
+	rapidjson::Value cards;
+	dict.SetObject();
+	dict.AddMember("baseDeck", (this->baseDeck->ID).c_str(), allocator);
+	for(std::map<std::string, PokerDeck *>::iterator iter  = this->decks.begin(); iter!= this->decks.end();iter++ )  
+    {  
+		//decks.PushBack((iter->second->toJSONString()).c_str(), allocator);
+	}  
+    
+	for(std::map<std::string, PokerPlayer *>::iterator iter = this->players.begin(); iter!= this->players.end();iter++)
+	{
+		players.PushBack((iter->second->toJSONString()).c_str(), allocator);
 
-	dict.insert(std::pair<std::string, PokerBase *>("baseDeck", new PokerString(baseDeck->ID)));
+	}
+
+	for(std::map<std::string, PokerCard *>::iterator iter = this->cards.begin(); iter != this->cards.end(); iter++)
+	{
+		//cards.PushBack((iter->second->toJSONString()).c_str(), allocator);
+	}
+	dict.AddMember("players", players, allocator);
+	dict.AddMember("decks", decks, allocator);
+	dict.AddMember("cards", cards, allocator);
+	dict.AddMember("action", "init", allocator);
 	
-	for(std::map<std::string, PokerDeck *>::iterator iter  = this->decks.begin(); iter!= this->decks.end();iter++ )  
-    {  
-		decks.push_back(iter->second);
-	}  
-    
-	for(std::map<std::string, PokerPlayer *>::iterator iter = this->players.begin(); iter!= this->players.end();iter++)
-	{
-		players.push_back(iter->second);
-	}
-
-	for(std::map<std::string, PokerCard *>::iterator iter = this->cards.begin(); iter != this->cards.end(); iter++)
-	{
-		cards.push_back(iter->second);
-	}
-	//stores the pointer which points to the vector array at dict
-	dict.insert(std::pair<std::string, PokerBase *>("players", new PokerVectorPoint(&players)));
-	dict.insert(std::pair<std::string, PokerBase *>("decks", new PokerVectorPoint(&decks)));
-	dict.insert(std::pair<std::string, PokerBase *>("cards", new PokerVectorPoint(&cards)));
-	dict.insert(std::pair<std::string, PokerBase *>("action", new PokerString("init")));
-	*/
-
-	//choice II
-	/*
-	Json::Value dict;
-	Json::Value decks;
-	Json::Value cards;
-	Json::Value players;
-	dict["baseDeck"] = this->baseDeck->ID;
-	for(std::map<std::string, PokerDeck *>::iterator iter  = this->decks.begin(); iter!= this->decks.end();iter++ )  
-    {  
-		decks.append(iter->second->toJSONString);
-	}  
-    
-	for(std::map<std::string, PokerPlayer *>::iterator iter = this->players.begin(); iter!= this->players.end();iter++)
-	{
-		players.append(iter->second->toJSONString);
-
-	}
-
-	for(std::map<std::string, PokerCard *>::iterator iter = this->cards.begin(); iter != this->cards.end(); iter++)
-	{
-		cards.append(iter->second->toJSONString);
-	}
-	dict["players"] = players;
-	dict["decks"] = decks;
-	dict["cards"] = cards;
-	dict["action"] = "init";
-	std::string msg = dict.toStyleString();
-	*/
-
-	//msg = toJSONString(dict);
-	//serverManager->serverBroadcast(msg);
+	rapidjson::StringBuffer buffer;  
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
+    dict.Accept(writer);  
+	std::string msg = buffer.GetString();
+	//clientManager->clientSend(msg);
 }
 	
 void PokerGame::reset()
@@ -197,77 +165,55 @@ void PokerGame::reset()
 
 void PokerGame::joinGameWithName(std::string name)
 {
-	/* choice I
-	std::map<std::string, std::string>dict;
-	dict.insert(std::pair<std::string, std::string>("action", "join"));
-	dict.insert(std::pair<std::string, std::string>("name", name));
-	*/
 
-	//choice II
-	/*
-	Json::Value root;
-	root["action"] = "join";
-	root["name"] = name;
-	std::string msg = root.toStyleString();
-	*/
-
-
-	//std::string msg = toJSONString(dict);
+	rapidjson::Document document;     
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
+	rapidjson::Value dict;
+	dict.SetObject();
+	dict.AddMember("action", "join", allocator);
+	dict.AddMember("name", name.c_str(), allocator);
+	rapidjson::StringBuffer buffer;  
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
+    dict.Accept(writer);  
+	std::string msg = buffer.GetString();
 	//clientManager->clientSend(msg);
 }
 	
 void PokerGame::shuffle(PokerDeck* deck)
 {
-	/* choice I
-	std::map<std::string, std::string>dict;
-	dict.insert(std::pair<std::string, std::string>("action", "shuffle"));
-	dict.insert(std::pair<std::string, std::string>("deckID", deck->ID));
-	*/
-
-	//choice II
-	/*
-	Json::Value root;
-	root["action"] = "shuffle";
-	root["deckID"] = deck->ID;
-	std::string msg = root.toStyleString();
-	*/
-	//std::string msg = toJSONString(dict);
+	rapidjson::Document document;     
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
+	rapidjson::Value dict;
+	dict.SetObject();
+	dict.AddMember("action", "shuffle", allocator);
+	dict.AddMember("deckID", (deck->ID).c_str(), allocator);
+	rapidjson::StringBuffer buffer;  
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
+    dict.Accept(writer);  
+	std::string msg = buffer.GetString();
 	//clientManager->clientSend(msg);
 }
 	
 void PokerGame::sort(PokerDeck* deck)
 {
-	/* choice I
-	std::map<std::string, std::string>dict;
-	dict.insert(std::pair<std::string, std::string>("action", "sort"));
-	dict.insert(std::pair<std::string, std::string>("deckID", deck->ID));
-	*/
-	/*
-	Json::Value root;
-	root["action"] = "sort";
-	root["deckID"] = deck->ID;
-	std::string msg = root.toStyleString();
-	*/
-
-
-	//std::string msg = toJSONString(dict);
+	rapidjson::Document document;     
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
+	rapidjson::Value dict;
+	dict.SetObject();
+	dict.AddMember("action", "sort", allocator);
+	dict.AddMember("deckID", (deck->ID).c_str(), allocator);
+	rapidjson::StringBuffer buffer;  
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
+    dict.Accept(writer);  
+	std::string msg = buffer.GetString();
 	//clientManager->clientSend(msg);
 }
 
 void PokerGame::didServerReceiveMessage(std::string message)
 {
-	/* choice I
-	std::map<std::string, std::string>dict;
-	//dict = dictionaryWithString(message);
-	std::string action = dict["action"];
-	*/
-	std::string action;
-	/*
-	Json::Value msg;
-	Json::Reader reader;
-	reader.parse(message, msg);
-	action = msg["action"];
-	*/
+	rapidjson::Document d;
+	d.Parse<0>(message.c_str());
+	std::string action = d["action"].GetString();
 	if(action == "moveCard")
 	{
 		if(!isValidMove(message))
@@ -299,24 +245,13 @@ PokerPlayer* PokerGame::allocPlayer()
 
 bool PokerGame::isValidMove(std::string message)
 {
-	/*choice I
-	std::map<std::string, std::string>dict;
-	//dict = dictionaryWithString(message);
-	std::string action = dict["action"];
+	rapidjson::Document d;
+	d.Parse<0>(message.c_str());
+	std::string action = d["action"].GetString();
 	assert(action == "moveCard");
-	*/
 
-	//choice II
-	/*
-	Json::Value dict;
-	Json::Reader reader;
-	reader.parse(message, dict);
-	std::string action = dict["action"];
-	assert(action == "moveCard");
-	
-
-	std::string cardID = dict["cardID"];
-	std::string srcDeckID = dict["srcDeckID"];
+	std::string cardID = d["cardID"].GetString();
+	std::string srcDeckID = d["srcDeckID"].GetString();
 
 	PokerCard *card = getCardWithID(cardID);
 	if(card->deck->ID == srcDeckID)
@@ -327,8 +262,6 @@ bool PokerGame::isValidMove(std::string message)
 	{
 		return FALSE;
 	}
-	*/
-	return TRUE;
 }
 
 

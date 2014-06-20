@@ -1,5 +1,10 @@
 #include "Poker.h"
-
+#include <iostream>
+#include <string>
+#include "json\rapidjson.h"
+#include "json\document.h"
+#include "json\stringbuffer.h"
+#include "json\writer.h"
 
 PokerPlayer::PokerPlayer()
 {
@@ -24,30 +29,31 @@ void PokerPlayer::moveCardToDeckAtIndex(PokerCard *card, PokerDeck *deck, int in
 
 std::string PokerPlayer::toJSONString()
 {
-	/*
-	Json::Value root;
-	Json::Value selectedCardsIDArray;
-	Json::Value decksIDArray;
 
-	std::vector<std::string> selectedCardsIDs;
-	std::vector<std::string> decksIDs;
-	for(std::vector<PokerCard *>::itertor iter = selectedCards.begin() ; iter != selectedCards.end() ; iter++ )
+	rapidjson::Document document;     
+    rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
+	rapidjson::Value dict;
+	dict.SetObject();
+	rapidjson::Value selectedCardsIDs;
+	rapidjson::Value decksIDs;
+	selectedCardsIDs.SetArray();
+	decksIDs.SetArray();
+	for(std::vector<PokerCard *>::iterator iter = selectedCards.begin() ; iter != selectedCards.end() ; iter++ )
 	{
-		//selectedCardsIDs.push_back(iter->ID);
-		selectedCardsIDArray.append(iter->ID);
+		selectedCardsIDs.PushBack(((*iter)->ID).c_str(), allocator);
 	}
-
-	for(std::vector<PokerDeck *>::itertor iter = decks.begin() ; iter != decks.end() ; iter++ )
+	for(std::vector<PokerDeck *>::iterator iter = decks.begin() ; iter != decks.end() ; iter++ )
 	{
-		//decksIDs.push_back(iter->ID);
-		decksIDArray.append(iter->ID);
+		decksIDs.PushBack(((*iter)->ID).c_str(), allocator);
 	}
-	root["ID"] = this->ID;
-	root["selectedCards"] = selectedCardsIDArray;
-	root["decks"] = decksIDArray;
-	root["pocket"] = this->pocket->ID;
-	return root.toStyledString();
+	
+	dict.AddMember("ID", (this->ID).c_str(), allocator);
+	dict.AddMember("selectedCards", selectedCardsIDs, allocator);
+	dict.AddMember("decks", decksIDs, allocator);
+	dict.AddMember("pocket", (this->pocket->ID).c_str(), allocator);
+	rapidjson::StringBuffer buffer;  
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
+    dict.Accept(writer);  
+	return buffer.GetString();
 
-	*/
-	return "";
 }
