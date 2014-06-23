@@ -5,6 +5,8 @@
 #include "json\stringbuffer.h"
 #include "json\writer.h"
 
+
+// Pass
 void PokerDeck::shuffle(){
 	std::random_shuffle(cards.begin(), cards.end());
 }
@@ -14,6 +16,7 @@ void PokerDeck::sort(){
 	return;
 }
 
+// Pass
 PokerCard* PokerDeck::getCardAtIndex(int index)
 {
 	int size = cards.size();
@@ -25,6 +28,7 @@ PokerCard* PokerDeck::getCardAtIndex(int index)
 		return cards[index];
 }
 
+// Pass
 bool PokerDeck::insertCardatIndex(PokerCard* card, int index)
 {
 	int size =cards.size();
@@ -40,6 +44,7 @@ bool PokerDeck::insertCardatIndex(PokerCard* card, int index)
 
 }
 
+// Pass
 PokerCard* PokerDeck::remoeCardAtIndex(int index)
 {
 	int size = cards.size();
@@ -54,7 +59,7 @@ PokerCard* PokerDeck::remoeCardAtIndex(int index)
 	return card;
 }
 
-//还要将card的deck属性置为空
+// Pass
 void PokerDeck::removeCard(PokerCard* card)
 {
 	std::vector<PokerCard*>::iterator iter = std::find(cards.begin(), cards.end(), card);
@@ -63,6 +68,8 @@ void PokerDeck::removeCard(PokerCard* card)
 	card->deck = NULL;
 }
 
+
+// Pass
 std::string PokerDeck::toJSONString(){
 	rapidjson::Document document;
 	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
@@ -78,10 +85,12 @@ std::string PokerDeck::toJSONString(){
 	return buffer.GetString();
 }
 
+// Pass
 bool PokerDeck::isEmpty(){
 	return cards.empty();
 }
 
+// Pass
 bool PokerDeck::isFaceUp(){
 	return this->faceUp;
 }

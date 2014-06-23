@@ -4,11 +4,15 @@
 #include "json\stringbuffer.h"
 #include "json\writer.h"
 
+// Pass
 void PokerCard::flip()
 {
 	this->faceUp = !this->faceUp;
 }
 
+
+// Not passed because of const issues
+// Since it is not used.. Temporarily leave it here
 int PokerCard::compareWithOtherCard(const PokerCard*& otherCard) const
 {
 	// Different from orginal?
@@ -27,11 +31,13 @@ int PokerCard::compareWithOtherCard(const PokerCard*& otherCard) const
 	}
 }
 
+
+// Pass
 std::string PokerCard::toJSONString()
 {
 
 	rapidjson::Document document;
-	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
+	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
 	rapidjson::Value dict;
 	dict.SetObject();
 
@@ -49,6 +55,8 @@ std::string PokerCard::toJSONString()
 
 }
 
+
+// Pass
 bool PokerCard::isFaceUp(){
 	return faceUp;
 }
