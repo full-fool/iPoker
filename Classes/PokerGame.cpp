@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include <stdio.h>
 #include <string>
+#include <sstream>
 #include "json\rapidjson.h"
 #include "json\document.h"
 #include "json\stringbuffer.h"
@@ -14,14 +15,14 @@ void PokerGame::initAsServerToHost(bool isServer, std::string host)
 {
 		if(isServer)
 		{
-			this->isServer = TRUE;
+			this->isServer = true;
 			serverManager = new ServerManager;
 			//serverManager->serverInitWithGame(this);
 			//serverManager->serverListen();
 		}
 		else
 		{
-			this->isServer = FALSE;
+			this->isServer = false;
 		}
 		clientManager = new ClientManager;
 		//clientManager->clientTnitWithGame(this);
@@ -29,22 +30,22 @@ void PokerGame::initAsServerToHost(bool isServer, std::string host)
 		//ASSERT(result);
 		reset();
 }
-
+//pass
 PokerCard* PokerGame::getCardWithID(std::string ID)
 {
 	 return cards[ID];
 }
-	
+//pass
 PokerDeck* PokerGame::getDeckWithID(std::string ID)
 {
 	return decks[ID];
 }
-
+//pass
 PokerPlayer* PokerGame::getPlayerWithID(std::string ID)
 {
 	return players[ID];
 }
-
+//pass
 void PokerGame::moveCardToDeckAtIndex(PokerCard* card, PokerDeck* deck, int index)
 {
 
@@ -64,7 +65,7 @@ void PokerGame::moveCardToDeckAtIndex(PokerCard* card, PokerDeck* deck, int inde
 	//clientManager->clientSend(msg);
 	
 }
-	
+//pass
 void PokerGame::pass()
 {
 
@@ -83,44 +84,69 @@ void PokerGame::pass()
 	
 }
 
+//pass
 void PokerGame::begin()
 
 {
 	rapidjson::Document document;     
     rapidjson::Document::AllocatorType& allocator = document.GetAllocator();  
 	rapidjson::Value dict;
-	rapidjson::Value decks;
-	rapidjson::Value players;
-	rapidjson::Value cards;
+	rapidjson::Value decks(rapidjson::kArrayType);
+	rapidjson::Value players(rapidjson::kArrayType);
+	rapidjson::Value cards(rapidjson::kArrayType);
 	dict.SetObject();
 	dict.AddMember("baseDeck", (this->baseDeck->ID).c_str(), allocator);
-	for(std::map<std::string, PokerDeck *>::iterator iter  = this->decks.begin(); iter!= this->decks.end();iter++ )  
-    {  
-		//decks.PushBack((iter->second->toJSONString()).c_str(), allocator);
-	}  
-    
-	for(std::map<std::string, PokerPlayer *>::iterator iter = this->players.begin(); iter!= this->players.end();iter++)
-	{
-		players.PushBack((iter->second->toJSONString()).c_str(), allocator);
 
-	}
-
-	for(std::map<std::string, PokerCard *>::iterator iter = this->cards.begin(); iter != this->cards.end(); iter++)
+	/*
+	std::map<std::string, PokerDeck *>::iterator iter1;
+	iter1 = this->decks.begin();
+	int deckNum = this->decks.size();
+	for(int i=0; i<deckNum; i++)
 	{
-		//cards.PushBack((iter->second->toJSONString()).c_str(), allocator);
+		PokerDeck *tempDeck = iter1->second;
+		std::string *tempMessage = new std::string(tempDeck->toJSONString());
+		decks.PushBack((*tempMessage).c_str(), allocator);
+		++iter1;
 	}
+	*/
+
+
+	std::map<std::string, PokerPlayer *>::iterator iter2;
+	iter2 = this->players.begin();
+	int playerNum = this->players.size();
+	for(int i=0; i<playerNum; i++)
+	{
+		PokerPlayer *tempPlayer = iter2->second;
+		std::string *tempMessage = new std::string(tempPlayer->toJSONString());
+		players.PushBack((*tempMessage).c_str(), allocator);
+		++iter2;
+	}
+    /*
+	std::map<std::string, PokerCard *>::iterator iter3;
+	iter3 = this->cards.begin();
+	int cardNum = this->cards.size();
+	for(int i=0; i<cardNum; i++)
+	{
+		PokerCard *tempCard = iter3->second;
+		std::string *tempMessage = new std::string(tempCard->toJSONString());
+		cards.PushBack((*tempMessage).c_str(), allocator);
+		++iter3;
+	}
+	*/
+
 	dict.AddMember("players", players, allocator);
-	dict.AddMember("decks", decks, allocator);
-	dict.AddMember("cards", cards, allocator);
+	//dict.AddMember("decks", decks, allocator);
+	//dict.AddMember("cards", cards, allocator);
 	dict.AddMember("action", "init", allocator);
 	
 	rapidjson::StringBuffer buffer;  
     rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);  
     dict.Accept(writer);  
 	std::string msg = buffer.GetString();
-	//clientManager->clientSend(msg);
+	//ServerManager->serverBroadcast(msg);
 }
-	
+
+//pass
 void PokerGame::reset()
 {
 	cards.clear();
@@ -134,7 +160,7 @@ void PokerGame::reset()
 	if(isServer)
 	{
 		baseDeck = allocDeck();
-		baseDeck->faceUp = FALSE;
+		baseDeck->faceUp = false;
 		deckCount = 1;
 		for(int i=0; i<deckCount; i++)
 		{
@@ -162,7 +188,7 @@ void PokerGame::reset()
 
 }
 	
-
+//pass
 void PokerGame::joinGameWithName(std::string name)
 {
 
@@ -178,7 +204,7 @@ void PokerGame::joinGameWithName(std::string name)
 	std::string msg = buffer.GetString();
 	//clientManager->clientSend(msg);
 }
-	
+//pass
 void PokerGame::shuffle(PokerDeck* deck)
 {
 	rapidjson::Document document;     
@@ -193,7 +219,7 @@ void PokerGame::shuffle(PokerDeck* deck)
 	std::string msg = buffer.GetString();
 	//clientManager->clientSend(msg);
 }
-	
+//pass
 void PokerGame::sort(PokerDeck* deck)
 {
 	rapidjson::Document document;     
@@ -209,24 +235,29 @@ void PokerGame::sort(PokerDeck* deck)
 	//clientManager->clientSend(msg);
 }
 
+//pass
 void PokerGame::didServerReceiveMessage(std::string message)
 {
+	/*
 	rapidjson::Document d;
 	d.Parse<0>(message.c_str());
 	std::string action = d["action"].GetString();
+	
 	if(action == "moveCard")
 	{
 		if(!isValidMove(message))
 			return;
 	}
+	*/
 	//serverManager->serverBroadcast(message);
 }
-	
+//pass
 void PokerGame::didClientReceiveMessage(std::string message)
 {
 	eventQueue.push(message);
 }
 
+//pass
 PokerPlayer* PokerGame::allocPlayer()
 {
 	PokerPlayer *player = new PokerPlayer;
@@ -242,7 +273,7 @@ PokerPlayer* PokerGame::allocPlayer()
 	return player;
 
 }
-
+//deprecated
 bool PokerGame::isValidMove(std::string message)
 {
 	rapidjson::Document d;
@@ -256,11 +287,11 @@ bool PokerGame::isValidMove(std::string message)
 	PokerCard *card = getCardWithID(cardID);
 	if(card->deck->ID == srcDeckID)
 	{
-		return TRUE;
+		return true;
 	}
 	else
 	{
-		return FALSE;
+		return false;
 	}
 }
 
@@ -406,6 +437,7 @@ void PokerGame::didPlayerSortDeck(PokerPlayer* player, PokerDeck* deck)
 	deck->sort();
 }
 
+//pass
 PokerCard* PokerGame::allocCard()
 {
 	std::stringstream ss;
@@ -413,11 +445,12 @@ PokerCard* PokerGame::allocCard()
 	ss << id;
 	PokerCard* card = new PokerCard();
 	card->ID = std::string("card-") + ss.str();
-
+	card->deck = NULL;
 	cards.insert(std::pair<std::string, PokerCard *>(card->ID, card));
 	return card;
 }
 
+//pass
 PokerDeck* PokerGame::allocDeck()
 {
 	std::stringstream ss;

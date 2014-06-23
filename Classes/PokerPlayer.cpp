@@ -10,23 +10,27 @@ PokerPlayer::PokerPlayer()
 {
 }
 
+//pass
 PokerPlayer::PokerPlayer(std::string _ID, std::string _name)
 {
 	this->ID = _ID;
 	this->name = _name;
 }
 
+//pass 
 void PokerPlayer::selectCards(PokerCard *card)
 {
-	selectedCards.insert(selectedCards.end()-1, card);
+	selectedCards.insert(selectedCards.end(), card);
 }
 
+//pass
 void PokerPlayer::moveCardToDeckAtIndex(PokerCard *card, PokerDeck *deck, int index)
 {
 	card->deck->removeCard(card);
 	deck->insertCardatIndex(card, index);
 }
 
+//pass
 std::string PokerPlayer::toJSONString()
 {
 

@@ -54,6 +54,7 @@ PokerCard* PokerDeck::remoeCardAtIndex(int index)
 	return card;
 }
 
+//还要将card的deck属性置为空
 void PokerDeck::removeCard(PokerCard* card)
 {
 	std::vector<PokerCard*>::iterator iter = std::find(cards.begin(), cards.end(), card);
