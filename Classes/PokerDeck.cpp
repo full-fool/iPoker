@@ -60,6 +60,7 @@ void PokerDeck::removeCard(PokerCard* card)
 	std::vector<PokerCard*>::iterator iter = std::find(cards.begin(), cards.end(), card);
 	if(iter != cards.end())
 		cards.erase(iter);
+	card->deck = NULL;
 }
 
 std::string PokerDeck::toJSONString(){
