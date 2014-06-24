@@ -42,12 +42,13 @@ bool GameScene::init()
 
 	auto cardBackListener = EventListenerTouchOneByOne::create();
 
-
+	
 	cardBackListener->onTouchBegan = [=](Touch* touch, Event* e){
 
 		Point p = touch->getLocation();
 		if(p.x <= 27 && p.y >= 720){
-			auto fade = FadeIn::create(2);
+			/*
+			auto fade = FadeIn::create(0.5);
 			auto selectedCard = Sprite::create("clubs_jack.png");
 			selectedCard->setAnchorPoint(Point(0,0));
 			selectedCard->setPosition(cardPosition * 30,20);
@@ -56,9 +57,34 @@ bool GameScene::init()
 			selectedCard->setTag(cardPosition);
 			this->addChild(selectedCard);
 			cardPosition++;
+			*/
+			auto selectedCard = Sprite::create("clubs_jack.png");
+			
+
+			selectedCard->setAnchorPoint(Point(0,0));
+			
+			selectedCard->setPosition(26,721);
+			selectedCard->setRotation(-45.0);
+			Size winSize = Director::getInstance()->getWinSize();
+			selectedCard->runAction(RotateTo::create(0.5, 0));
+			CCActionInterval * moveBy = CCMoveBy::create(0.5,ccp(cardPosition * 30 - 10, 50 - winSize.height));
+			
+			selectedCard->runAction(moveBy);
+			
+			
+
+			CCOrbitCamera * flipYAction = CCOrbitCamera::create(0.5f, 1, 0, 90, -90, 0, 0);
+			selectedCard->runAction(flipYAction);
+			selectedCard->setTag(cardPosition);
+			this->addChild(selectedCard);
+			cardPosition++;
+
+
 		}
 		return true;
 	};
+	
+	
 
 
 	
@@ -112,3 +138,4 @@ void GameScene::menuCloseCallback(Ref* pSender)
     exit(0);
 #endif
 }
+

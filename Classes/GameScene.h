@@ -19,6 +19,8 @@ public:
 	CREATE_FUNC(GameScene);
 
 	int cardPosition;
+
+	
 };
 
 #endif // __HELLOWORLD_SCENE_H__
