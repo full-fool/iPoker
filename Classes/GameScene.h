@@ -23,11 +23,26 @@ public:
 	void undoCard(Ref* pSend);
 	void playCard(Ref* pSend);
 	void quitCard(Ref* pSend);	
+	void bubbleSetInvisible(float dt);
+	void wordSetInvisible(float dt);
 
 
 
 	int cardPosition;
 	std::vector<Node*> public_deck;
+	
+	cocos2d::Sprite* Bubble1;
+	cocos2d::Sprite* Bubble2;
+	cocos2d::Sprite* Bubble3;
+	cocos2d::Sprite* Bubble4;
+
+	cocos2d::LabelTTF* PassWord;
+	cocos2d::LabelTTF* CMyCardWord;
+	cocos2d::LabelTTF* UndoWord;
+	cocos2d::LabelTTF* QuitWord;
+	
+
+
 	
 };
 

@@ -13,10 +13,30 @@ Scene* GameScene::createScene()
     // add layer as a child to scene
     scene->addChild(layer,1);
 	scene->addChild(colorLayer, 0);
-
+	
     // return the scene
     return scene;
 }
+
+
+void GameScene::bubbleSetInvisible(float dt)
+{
+	this->Bubble1->setVisible(false);
+	this->Bubble2->setVisible(false);
+	this->Bubble3->setVisible(false);
+	this->Bubble4->setVisible(false);
+	
+
+}
+
+void GameScene::wordSetInvisible(float dt)
+{
+	this->PassWord->setVisible(false);
+	this->CMyCardWord->setVisible(false);
+	this->UndoWord->setVisible(false);
+	this->QuitWord->setVisible(false);
+}
+
 
 // on "init" you need to initialize your instance
 bool GameScene::init()
@@ -56,9 +76,9 @@ bool GameScene::init()
 			selectedCard->setRotation(-45.0);
 			Size winSize = Director::getInstance()->getWinSize();
 			selectedCard->runAction(RotateTo::create(0.5, 0));
-			CCActionInterval * moveBy = CCMoveBy::create(0.5,ccp(cardPosition * 30 - 10, 50 - winSize.height));
-			
-			selectedCard->runAction(moveBy);
+			//CCActionInterval * moveBy = CCMoveBy::create(0.5,ccp(cardPosition * 30 - 10, 50 - winSize.height));
+			auto moveTo = CCMoveTo::create(0.5, ccp(cardPosition*30, 20));
+			selectedCard->runAction(moveTo);
 			
 			
 
@@ -72,101 +92,74 @@ bool GameScene::init()
 		}
 		return true;
 	};
-	
-	
 
-
-	
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(cardBackListener, cardBack);
 	//------------- BackCard Listener Ended -------
 
+	PassWord = LabelTTF::create("Pass!", "Arial", 20);
+	PassWord->setPosition(300, 700);
+	PassWord->setVisible(false);
+	CMyCardWord = LabelTTF::create("See my cards!", "Arial", 20);
+	CMyCardWord->setPosition(300, 700);
+	CMyCardWord->setVisible(false);
+	UndoWord = LabelTTF::create("Undo...Sorry...!", "Arial", 20);
+	UndoWord->setPosition(300, 700);
+	UndoWord->setVisible(false);
+	QuitWord = LabelTTF::create("Going to quit, bye!", "Arial", 20);
+	QuitWord->setPosition(300, 700);
+	QuitWord->setVisible(false);
+	
+
+	this->addChild(PassWord, 3);
+	this->addChild(CMyCardWord, 3);
+	this->addChild(UndoWord, 3);
+	this->addChild(QuitWord, 3);
+
 	//players and bubbles
 	auto Player1 = Sprite::create("player1.png");
-	Player1->setPosition(100,350);
+	Player1->setPosition(100,410);
 	Player1->setScale(0.2);
 	//Size playerSize = Player1->getContentSize();
 	//CCLog("player size is %d witdh and %d height", playerSize.width, playerSize.height);
 
 	auto Player2 = Sprite::create("player2.png");
-	Player2->setPosition(100,410);
+	Player2->setPosition(100,470);
 	Player2->setScale(0.2);
 	//Size playerSize = Player1->getContentSize();
 	//CCLog("player size is %d witdh and %d height", playerSize.width, playerSize.height);
 	auto Player3 = Sprite::create("player3.png");
-	Player3->setPosition(100,470);
+	Player3->setPosition(100,530);
 	Player3->setScale(0.2);
 
 	auto Player4 = Sprite::create("player4.png");
-	Player4->setPosition(100,530);
+	Player4->setPosition(100,590);
 	Player4->setScale(0.2);
 
 	this->addChild(Player1, 0);
 	this->addChild(Player2, 0);
 	this->addChild(Player3, 0);
 	this->addChild(Player4, 0);
-
-	auto Bubble = Sprite::create("bubble.png");
-	Bubble->setPosition(200, 410);
-	Bubble->setVisible(false);
-	this->addChild(Bubble, 2);
 	
+	Bubble1 = Sprite::create("Bubble1.png");
+	Bubble1->setPosition(300, 690);
+	Bubble1->setVisible(false);
+	this->addChild(Bubble1, 2);
 
-	auto PlayersListener = EventListenerTouchOneByOne::create();
-	auto label = LabelTTF::create("", "Arial", 20);
-	label->setColor(Color3B(130,130,150));
-	label->setVisible(false);		
-	this->addChild(label, 2);
-	PlayersListener->onTouchBegan = [=](Touch* touch, Event* e){
+	Bubble2 = Sprite::create("Bubble2.png");
+	Bubble2->setPosition(200, 690);
+	Bubble2->setVisible(false);
+	this->addChild(Bubble2, 2);
 
-		Bubble->setVisible(true);
-		Point touchLocation = this->convertTouchToNodeSpace(touch);
-		if (Player1->getBoundingBox().containsPoint(touchLocation) )
-        {
-            CCLog("player1 touched!");
-			//auto moveToBubble = MoveTo::create(0.1, Point(200, 410));
-			//Bubble->runAction(moveToBubble);
-			label->setString("player1: ");
-			label->setPosition(210, 420);
-			label->setVisible(true);
+	Bubble3 = Sprite::create("Bubble3.png");
+	Bubble3->setPosition(200, 690);
+	Bubble3->setVisible(false);
+	this->addChild(Bubble3, 2);
 
-			Bubble->setPosition(200, 410);
-        }
-		else if(Player2->getBoundingBox().containsPoint(touchLocation))
-		{
-			//auto moveToBubble = MoveTo::create(0.1, Point(200, 470));
-			//Bubble->runAction(moveToBubble);
-			label->setString("player2: ");
-			label->setPosition(210, 480);
-			label->setVisible(true);
-			Bubble->setPosition(200, 470);
-		}
-		else if(Player3->getBoundingBox().containsPoint(touchLocation))
-		{
-			//auto moveToBubble = MoveTo::create(0.1, Point(200, 530));
-			//Bubble->runAction(moveToBubble);
-			label->setString("player3: ");
-			label->setPosition(210, 540);
-			label->setVisible(true);
-			Bubble->setPosition(200, 530);
-		}
-		else if(Player4->getBoundingBox().containsPoint(touchLocation))
-		{
-			//auto moveToBubble = MoveTo::create(0.1, Point(200, 590));
-			//Bubble->runAction(moveToBubble);
-			label->setString("player4: ");
-			label->setPosition(210, 600);
-			label->setVisible(true);
-			Bubble->setPosition(200, 590);
-		}
-		return true;
-	};
-	_eventDispatcher->addEventListenerWithFixedPriority(PlayersListener, 1);
-
+	Bubble4 = Sprite::create("Bubble4.png");
+	Bubble4->setPosition(200, 690);
+	Bubble4->setVisible(false);
+	this->addChild(Bubble4, 2);
 	
-
-
-	
-
 
 	//cardBack->setRotation(-45.0);
 
@@ -177,9 +170,9 @@ bool GameScene::init()
 
 	handCardListener->onTouchBegan = [=](Touch* touch, Event* e){
 		int i, j;
-		float card_y =  3.0;
+		float card_y =  20.0;
 		for(i = cardPosition - 1; i >= 1; i--){
-			Rect rect = Rect( i * 30 + 16, card_y, 150, 225);
+			Rect rect = Rect( i * 30, card_y, 150, 225);
 			if(rect.containsPoint(touch->getLocation())){
 				
 				auto card = getChildByTag(i);
@@ -218,14 +211,15 @@ bool GameScene::init()
 	playCardButton->setAnchorPoint(Point(0,0));
 	quitButton->setAnchorPoint(Point(0,0));
 
-	shuffleButton->setPosition(130, 280);
-	passButton->setPosition(220, 280);
-	undoButton->setPosition(295, 280);
-	playCardButton->setPosition(375,280);
-	quitButton->setPosition(450, 280);
+	shuffleButton->setPosition(130, 310);
+	passButton->setPosition(220, 310);
+	undoButton->setPosition(295, 310);
+	playCardButton->setPosition(375,310);
+	quitButton->setPosition(450, 310);
 
 	shuffleButton->setScale(0.75);
 	passButton->setScale(0.75);
+
 	undoButton->setScale(0.75);
 	playCardButton->setScale(0.75);
 	quitButton->setScale(0.75);
@@ -248,11 +242,22 @@ void GameScene::shuffleCard(Ref* pSend)
 void GameScene::passCard(Ref* pSend)
 {
 	log("Pass Card Pressed!");
+	wordSetInvisible(0);
+	PassWord->setVisible(true);
+	Bubble1->setVisible(true);		
+	this->scheduleOnce(schedule_selector(GameScene::bubbleSetInvisible), 2.0f); 
+	this->scheduleOnce(schedule_selector(GameScene::wordSetInvisible), 2.0f); 
+
 }
 
 void GameScene::quitCard(Ref* pSend)
 {
 	log("Quit Card Pressed!");
+	wordSetInvisible(0);
+	QuitWord->setVisible(true);
+	Bubble1->setVisible(true);		
+	this->scheduleOnce(schedule_selector(GameScene::wordSetInvisible), 2.0f); 
+	this->scheduleOnce(schedule_selector(GameScene::bubbleSetInvisible), 2.0f); 
 }
 
 void GameScene::undoCard(Ref* pSend)
@@ -272,7 +277,7 @@ void GameScene::undoCard(Ref* pSend)
 	}
 
 	for(iter = lastHand.begin(); iter != lastHand.end(); iter++){
-		auto moveTo = MoveTo::create(1, Point(cardPosition * 30 + 16, 3.0));
+		auto moveTo = MoveTo::create(1, Point(cardPosition * 30, 20.0));
 		(*iter)->setTag(cardPosition);
 		(*iter)->setZOrder(cardPosition);
 		(*iter)->runAction(moveTo);
@@ -280,13 +285,18 @@ void GameScene::undoCard(Ref* pSend)
 	}
 
 	log("%d card in last hand, %d card in public deck", lastHand.size(), public_deck.size());
+	wordSetInvisible(0);
+	UndoWord->setVisible(true);
+	Bubble1->setVisible(true);		
+	this->scheduleOnce(schedule_selector(GameScene::bubbleSetInvisible), 2.0f); 
+	this->scheduleOnce(schedule_selector(GameScene::wordSetInvisible), 2.0f); 
 }
 
 void GameScene::playCard(Ref* pSender)
 {
     int i, j, k;
-    float public_x = 200, public_y = 330;
-	float card_y = 3.0;
+    float public_x = 200, public_y = 390;
+	float card_y = 20.0;
     log("Play Card Button Pressed!");
     std::vector<Node*> selected;
     std::vector<Node*> remain;
@@ -323,12 +333,17 @@ void GameScene::playCard(Ref* pSender)
 	for(i = 0; i < remain.size(); i++){
 		int position = i + 1;
 		Node* card = remain[i];
-		auto moveTo = MoveTo::create(0.4, Point(position * 30 + 16.0, card_y));
+		auto moveTo = MoveTo::create(0.4, Point(position * 30, card_y));
 		card->runAction(moveTo);
 		card->setTag(position);
 		card->setZOrder(position);
 	}
 	cardPosition = remain.size() + 1;
+	wordSetInvisible(0);
+	CMyCardWord->setVisible(true);
+	Bubble1->setVisible(true);		
+	this->scheduleOnce(schedule_selector(GameScene::bubbleSetInvisible), 2.0f); 
+	this->scheduleOnce(schedule_selector(GameScene::wordSetInvisible), 2.0f); 
 
 }
 
