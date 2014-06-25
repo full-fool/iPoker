@@ -189,11 +189,11 @@ bool GameScene::init()
 
 	// Add play card button
 	//auto playCardButton = MenuItemLabel::create(Label::create("[Play Card]", "Arial", 20), CC_CALLBACK_1(GameScene::playCard, this));
-	auto playCardButton = MenuItemImage::create("play.png", "play.png", "play.png", CC_CALLBACK_1(GameScene::playCard, this));
-	auto shuffleButton = MenuItemImage::create("shuffle.png", "shuffle.png", "shuffle.png", CC_CALLBACK_1(GameScene::shuffleCard, this));
-	auto passButton = MenuItemImage::create("pass.png", "pass.png", "pass.png", CC_CALLBACK_1(GameScene::passCard, this));
-	auto undoButton = MenuItemImage::create("undo.png", "undo.png", "undo.png", CC_CALLBACK_1(GameScene::undoCard, this));
-	auto quitButton = MenuItemImage::create("quit.png", "quit.png", "quit.png", CC_CALLBACK_1(GameScene::quitCard, this));
+	auto playCardButton = MenuItemImage::create("play.png", "pplay.png", "play.png", CC_CALLBACK_1(GameScene::playCard, this));
+	auto shuffleButton = MenuItemImage::create("shuffle.png", "pshuffle.png", "disabledShuffle.png", CC_CALLBACK_1(GameScene::shuffleCard, this));
+	auto passButton = MenuItemImage::create("pass.png", "ppass.png", "pass.png", CC_CALLBACK_1(GameScene::passCard, this));
+	auto undoButton = MenuItemImage::create("undo.png", "pundo.png", "undo.png", CC_CALLBACK_1(GameScene::undoCard, this));
+	auto quitButton = MenuItemImage::create("quit.png", "pquit.png", "quit.png", CC_CALLBACK_1(GameScene::quitCard, this));
     
 	shuffleButton->setAnchorPoint(Point(0,0));
 	passButton->setAnchorPoint(Point(0,0));
