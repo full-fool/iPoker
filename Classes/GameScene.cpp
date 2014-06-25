@@ -107,39 +107,56 @@ bool GameScene::init()
 
 	auto Bubble = Sprite::create("bubble.png");
 	Bubble->setPosition(200, 410);
+	Bubble->setVisible(false);
 	this->addChild(Bubble, 2);
+	
 
 	auto PlayersListener = EventListenerTouchOneByOne::create();
-
-	
+	auto label = LabelTTF::create("", "Arial", 20);
+	label->setColor(Color3B(130,130,150));
+	label->setVisible(false);		
+	this->addChild(label, 2);
 	PlayersListener->onTouchBegan = [=](Touch* touch, Event* e){
 
-		
+		Bubble->setVisible(true);
 		Point touchLocation = this->convertTouchToNodeSpace(touch);
 		if (Player1->getBoundingBox().containsPoint(touchLocation) )
         {
             CCLog("player1 touched!");
-			auto moveToBubble = MoveTo::create(0.1, Point(200, 410));
-			Bubble->runAction(moveToBubble);
-			//Bubble->setPosition(200, 410);
+			//auto moveToBubble = MoveTo::create(0.1, Point(200, 410));
+			//Bubble->runAction(moveToBubble);
+			label->setString("player1: ");
+			label->setPosition(210, 420);
+			label->setVisible(true);
+
+			Bubble->setPosition(200, 410);
         }
 		else if(Player2->getBoundingBox().containsPoint(touchLocation))
 		{
-			auto moveToBubble = MoveTo::create(0.1, Point(200, 470));
-			Bubble->runAction(moveToBubble);
-			//Bubble->setPosition(200, 470);
+			//auto moveToBubble = MoveTo::create(0.1, Point(200, 470));
+			//Bubble->runAction(moveToBubble);
+			label->setString("player2: ");
+			label->setPosition(210, 480);
+			label->setVisible(true);
+			Bubble->setPosition(200, 470);
 		}
 		else if(Player3->getBoundingBox().containsPoint(touchLocation))
 		{
-			auto moveToBubble = MoveTo::create(0.1, Point(200, 530));
-			Bubble->runAction(moveToBubble);
-			//Bubble->setPosition(200, 530);
+			//auto moveToBubble = MoveTo::create(0.1, Point(200, 530));
+			//Bubble->runAction(moveToBubble);
+			label->setString("player3: ");
+			label->setPosition(210, 540);
+			label->setVisible(true);
+			Bubble->setPosition(200, 530);
 		}
 		else if(Player4->getBoundingBox().containsPoint(touchLocation))
 		{
-			auto moveToBubble = MoveTo::create(0.1, Point(200, 590));
-			Bubble->runAction(moveToBubble);
-			//Bubble->setPosition(200, 590);
+			//auto moveToBubble = MoveTo::create(0.1, Point(200, 590));
+			//Bubble->runAction(moveToBubble);
+			label->setString("player4: ");
+			label->setPosition(210, 600);
+			label->setVisible(true);
+			Bubble->setPosition(200, 590);
 		}
 		return true;
 	};
