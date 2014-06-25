@@ -18,7 +18,11 @@ public:
     // implement the "static create()" method manually
 	CREATE_FUNC(GameScene);
 
-	void playCard(Ref* pSend);	
+	void shuffleCard(Ref* pSend);
+	void passCard(Ref* pSend);
+	void undoCard(Ref* pSend);
+	void playCard(Ref* pSend);
+	void quitCard(Ref* pSend);	
 
 
 
