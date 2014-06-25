@@ -98,12 +98,15 @@ bool GameScene::init()
 
 	handCardListener->onTouchBegan = [=](Touch* touch, Event* e){
 		int i, j;
+		float card_y =  3.0;
 		for(i = cardPosition - 1; i >= 1; i--){
-			Rect rect = Rect( i * 30, 20, 150, 225);
+			Rect rect = Rect( i * 30 + 16, card_y, 150, 225);
 			if(rect.containsPoint(touch->getLocation())){
 				
 				auto card = getChildByTag(i);
+
 				log("Card %d %f", i, card->getScale());
+				log("x:%f y:%f", card->getPosition().x, card->getPosition().y);
 				if(card->getScale() < 1.1)
 					card->setScale(1.2);
 				else
@@ -138,7 +141,7 @@ void GameScene::playCard(Ref* pSender)
 {
     int i, j, k;
     float public_x = 200, public_y = 330;
-
+	float card_y = 3.0;
     log("Play Card Button Pressed!");
     std::vector<Node*> selected;
     std::vector<Node*> remain;
@@ -160,8 +163,8 @@ void GameScene::playCard(Ref* pSender)
     for(i = 0; i < selected.size(); i++){
         Node* card = selected[i];
 		card->setZOrder(1);
-        auto moveTo = MoveTo::create(1, Point(public_x, public_y));
-        auto scaleTo = ScaleTo::create(1, 1.0);
+        auto moveTo = MoveTo::create(0.4, Point(public_x, public_y));
+        auto scaleTo = ScaleTo::create(0.4, 1.0);
         auto spawn = Spawn::create(moveTo, scaleTo, NULL);
         card->runAction(spawn);
         public_x += 30.0;
@@ -173,7 +176,7 @@ void GameScene::playCard(Ref* pSender)
 	for(i = 0; i < remain.size(); i++){
 		int position = i + 1;
 		Node* card = remain[i];
-		auto moveTo = MoveTo::create(0.5, Point(position * 30, 0));
+		auto moveTo = MoveTo::create(0.4, Point(position * 30 + 16.0, card_y));
 		card->runAction(moveTo);
 		card->setTag(position);
 	}
