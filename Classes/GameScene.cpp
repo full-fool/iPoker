@@ -188,16 +188,82 @@ bool GameScene::init()
 
 
 	// Add play card button
-	auto playCardButton = MenuItemLabel::create(Label::create("[Play Card]", "Arial", 20), CC_CALLBACK_1(GameScene::playCard, this));
+	//auto playCardButton = MenuItemLabel::create(Label::create("[Play Card]", "Arial", 20), CC_CALLBACK_1(GameScene::playCard, this));
+	auto playCardButton = MenuItemImage::create("play.png", "play.png", "play.png", CC_CALLBACK_1(GameScene::playCard, this));
+	auto shuffleButton = MenuItemImage::create("shuffle.png", "shuffle.png", "shuffle.png", CC_CALLBACK_1(GameScene::shuffleCard, this));
+	auto passButton = MenuItemImage::create("pass.png", "pass.png", "pass.png", CC_CALLBACK_1(GameScene::passCard, this));
+	auto undoButton = MenuItemImage::create("undo.png", "undo.png", "undo.png", CC_CALLBACK_1(GameScene::undoCard, this));
+	auto quitButton = MenuItemImage::create("quit.png", "quit.png", "quit.png", CC_CALLBACK_1(GameScene::quitCard, this));
     
-    playCardButton->setPosition(400,300);
-    auto buttons = Menu::create(playCardButton, NULL);
+	shuffleButton->setAnchorPoint(Point(0,0));
+	passButton->setAnchorPoint(Point(0,0));
+	undoButton->setAnchorPoint(Point(0,0));
+	playCardButton->setAnchorPoint(Point(0,0));
+	quitButton->setAnchorPoint(Point(0,0));
+
+	shuffleButton->setPosition(130, 280);
+	passButton->setPosition(220, 280);
+	undoButton->setPosition(295, 280);
+	playCardButton->setPosition(375,280);
+	quitButton->setPosition(450, 280);
+
+	shuffleButton->setScale(0.75);
+	passButton->setScale(0.75);
+	undoButton->setScale(0.75);
+	playCardButton->setScale(0.75);
+	quitButton->setScale(0.75);
+
+    auto buttons = Menu::create(shuffleButton, passButton, undoButton, playCardButton, quitButton, NULL);
+
+
+
     buttons->setPosition(0,0);
     this->addChild(buttons);
 
 	return true;
 }
 
+void GameScene::shuffleCard(Ref* pSend)
+{
+	log("Shuffle Card Pressed!");
+}
+
+void GameScene::passCard(Ref* pSend)
+{
+	log("Pass Card Pressed!");
+}
+
+void GameScene::quitCard(Ref* pSend)
+{
+	log("Quit Card Pressed!");
+}
+
+void GameScene::undoCard(Ref* pSend)
+{
+	log("Undo Card Pressed!");
+	std::vector<Node*> lastHand;
+	int i, j, k;
+	std::vector<Node*>::iterator iter;
+
+	for(iter = public_deck.begin(); iter != public_deck.end(); ){
+		if( (*iter)->getOpacity() > 100){
+			lastHand.push_back(*iter);
+			iter = public_deck.erase(iter);
+		} else {
+			iter++;
+		}
+	}
+
+	for(iter = lastHand.begin(); iter != lastHand.end(); iter++){
+		auto moveTo = MoveTo::create(1, Point(cardPosition * 30 + 16, 3.0));
+		(*iter)->setTag(cardPosition);
+		(*iter)->setZOrder(cardPosition);
+		(*iter)->runAction(moveTo);
+		cardPosition++;
+	}
+
+	log("%d card in last hand, %d card in public deck", lastHand.size(), public_deck.size());
+}
 
 void GameScene::playCard(Ref* pSender)
 {
@@ -216,6 +282,8 @@ void GameScene::playCard(Ref* pSender)
         else
             selected.push_back(card);
     }
+	if (selected.size() == 0 )
+		return;
 
 	for(i = 0; i < public_deck.size(); i++){
 		public_deck[i]->setOpacity(20);
@@ -241,6 +309,7 @@ void GameScene::playCard(Ref* pSender)
 		auto moveTo = MoveTo::create(0.4, Point(position * 30 + 16.0, card_y));
 		card->runAction(moveTo);
 		card->setTag(position);
+		card->setZOrder(position);
 	}
 	cardPosition = remain.size() + 1;
 
