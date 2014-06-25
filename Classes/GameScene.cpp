@@ -47,17 +47,6 @@ bool GameScene::init()
 
 		Point p = touch->getLocation();
 		if(p.x <= 27 && p.y >= 720){
-			/*
-			auto fade = FadeIn::create(0.5);
-			auto selectedCard = Sprite::create("clubs_jack.png");
-			selectedCard->setAnchorPoint(Point(0,0));
-			selectedCard->setPosition(cardPosition * 30,20);
-			selectedCard->setOpacity(0);
-			selectedCard->runAction(fade);
-			selectedCard->setTag(cardPosition);
-			this->addChild(selectedCard);
-			cardPosition++;
-			*/
 			auto selectedCard = Sprite::create("clubs_jack.png");
 			
 
@@ -76,7 +65,7 @@ bool GameScene::init()
 			CCOrbitCamera * flipYAction = CCOrbitCamera::create(0.5f, 1, 0, 90, -90, 0, 0);
 			selectedCard->runAction(flipYAction);
 			selectedCard->setTag(cardPosition);
-			this->addChild(selectedCard);
+			this->addChild(selectedCard, 1);
 			cardPosition++;
 
 
@@ -90,6 +79,79 @@ bool GameScene::init()
 	
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(cardBackListener, cardBack);
 	//------------- BackCard Listener Ended -------
+
+	//players and bubbles
+	auto Player1 = Sprite::create("player1.png");
+	Player1->setPosition(100,350);
+	Player1->setScale(0.2);
+	//Size playerSize = Player1->getContentSize();
+	//CCLog("player size is %d witdh and %d height", playerSize.width, playerSize.height);
+
+	auto Player2 = Sprite::create("player2.png");
+	Player2->setPosition(100,410);
+	Player2->setScale(0.2);
+	//Size playerSize = Player1->getContentSize();
+	//CCLog("player size is %d witdh and %d height", playerSize.width, playerSize.height);
+	auto Player3 = Sprite::create("player3.png");
+	Player3->setPosition(100,470);
+	Player3->setScale(0.2);
+
+	auto Player4 = Sprite::create("player4.png");
+	Player4->setPosition(100,530);
+	Player4->setScale(0.2);
+
+	this->addChild(Player1, 0);
+	this->addChild(Player2, 0);
+	this->addChild(Player3, 0);
+	this->addChild(Player4, 0);
+
+	auto Bubble = Sprite::create("bubble.png");
+	Bubble->setPosition(200, 410);
+	this->addChild(Bubble, 2);
+
+	auto PlayersListener = EventListenerTouchOneByOne::create();
+
+	
+	PlayersListener->onTouchBegan = [=](Touch* touch, Event* e){
+
+		
+		Point touchLocation = this->convertTouchToNodeSpace(touch);
+		if (Player1->getBoundingBox().containsPoint(touchLocation) )
+        {
+            CCLog("player1 touched!");
+			auto moveToBubble = MoveTo::create(0.1, Point(200, 410));
+			Bubble->runAction(moveToBubble);
+			//Bubble->setPosition(200, 410);
+        }
+		else if(Player2->getBoundingBox().containsPoint(touchLocation))
+		{
+			auto moveToBubble = MoveTo::create(0.1, Point(200, 470));
+			Bubble->runAction(moveToBubble);
+			//Bubble->setPosition(200, 470);
+		}
+		else if(Player3->getBoundingBox().containsPoint(touchLocation))
+		{
+			auto moveToBubble = MoveTo::create(0.1, Point(200, 530));
+			Bubble->runAction(moveToBubble);
+			//Bubble->setPosition(200, 530);
+		}
+		else if(Player4->getBoundingBox().containsPoint(touchLocation))
+		{
+			auto moveToBubble = MoveTo::create(0.1, Point(200, 590));
+			Bubble->runAction(moveToBubble);
+			//Bubble->setPosition(200, 590);
+		}
+		return true;
+	};
+	_eventDispatcher->addEventListenerWithFixedPriority(PlayersListener, 1);
+
+	
+
+
+	
+
+
+	//cardBack->setRotation(-45.0);
 
 	//-------------HandCard Listener --------
 
