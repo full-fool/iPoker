@@ -121,9 +121,65 @@ bool GameScene::init()
 	_eventDispatcher->addEventListenerWithFixedPriority(handCardListener, 1);
 	//------------- HandCard Listener Ended -------
 
+
+	// Add play card button
+	auto playCardButton = MenuItemLabel::create(Label::create("[Play Card]", "Arial", 20), CC_CALLBACK_1(GameScene::playCard, this));
+    
+    playCardButton->setPosition(400,300);
+    auto buttons = Menu::create(playCardButton, NULL);
+    buttons->setPosition(0,0);
+    this->addChild(buttons);
+
 	return true;
 }
 
+
+void GameScene::playCard(Ref* pSender)
+{
+    int i, j, k;
+    float public_x = 200, public_y = 330;
+
+    log("Play Card Button Pressed!");
+    std::vector<Node*> selected;
+    std::vector<Node*> remain;
+    for(i = 1; i < cardPosition; i++){
+        // Check status of all cards 
+        Node* card = getChildByTag(i);
+        
+        if(card->getScale() < 1.1)
+            remain.push_back(card);
+        else
+            selected.push_back(card);
+    }
+
+	for(i = 0; i < public_deck.size(); i++){
+		public_deck[i]->setOpacity(20);
+		public_deck[i]->setZOrder(0);
+	}
+
+    for(i = 0; i < selected.size(); i++){
+        Node* card = selected[i];
+		card->setZOrder(1);
+        auto moveTo = MoveTo::create(1, Point(public_x, public_y));
+        auto scaleTo = ScaleTo::create(1, 1.0);
+        auto spawn = Spawn::create(moveTo, scaleTo, NULL);
+        card->runAction(spawn);
+        public_x += 30.0;
+		card->setTag(0);
+
+		public_deck.push_back(card);
+
+    }
+	for(i = 0; i < remain.size(); i++){
+		int position = i + 1;
+		Node* card = remain[i];
+		auto moveTo = MoveTo::create(0.5, Point(position * 30, 0));
+		card->runAction(moveTo);
+		card->setTag(position);
+	}
+	cardPosition = remain.size() + 1;
+
+}
 
 void GameScene::menuCloseCallback(Ref* pSender)
 {

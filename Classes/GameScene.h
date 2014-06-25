@@ -1,6 +1,6 @@
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
-
+#include <vector>
 #include "cocos2d.h"
 
 class GameScene : public cocos2d::Layer
@@ -18,8 +18,12 @@ public:
     // implement the "static create()" method manually
 	CREATE_FUNC(GameScene);
 
-	int cardPosition;
+	void playCard(Ref* pSend);	
 
+
+
+	int cardPosition;
+	std::vector<Node*> public_deck;
 	
 };
 
