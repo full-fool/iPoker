@@ -76,7 +76,6 @@ bool GameScene::init()
 			selectedCard->setRotation(-45.0);
 			Size winSize = Director::getInstance()->getWinSize();
 			selectedCard->runAction(RotateTo::create(0.5, 0));
-			//CCActionInterval * moveBy = CCMoveBy::create(0.5,ccp(cardPosition * 30 - 10, 50 - winSize.height));
 			auto moveTo = CCMoveTo::create(0.5, ccp(cardPosition*30, 20));
 			selectedCard->runAction(moveTo);
 			
@@ -85,7 +84,7 @@ bool GameScene::init()
 			CCOrbitCamera * flipYAction = CCOrbitCamera::create(0.5f, 1, 0, 90, -90, 0, 0);
 			selectedCard->runAction(flipYAction);
 			selectedCard->setTag(cardPosition);
-			this->addChild(selectedCard, 1);
+			this->addChild(selectedCard, cardPosition);
 			cardPosition++;
 
 
