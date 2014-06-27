@@ -1,4 +1,5 @@
 #include "GameScene.h"
+#include "HelloWorldScene.h"
 //#include <afxsock.h>
 //#define _AFXDLL
 
@@ -213,11 +214,11 @@ bool GameScene::init()
 	playCardButton->setAnchorPoint(Point(0,0));
 	quitButton->setAnchorPoint(Point(0,0));
 
-	shuffleButton->setPosition(130, 310);
+	shuffleButton->setPosition(129, 310);
 	passButton->setPosition(220, 310);
 	undoButton->setPosition(295, 310);
-	playCardButton->setPosition(375,310);
-	quitButton->setPosition(450, 310);
+	playCardButton->setPosition(373,310);
+	quitButton->setPosition(444, 310);
 
 	shuffleButton->setScale(0.75);
 	passButton->setScale(0.75);
@@ -256,10 +257,13 @@ void GameScene::quitCard(Ref* pSend)
 {
 	log("Quit Card Pressed!");
 	wordSetInvisible(0);
-	QuitWord->setVisible(true);
-	Bubble1->setVisible(true);		
-	this->scheduleOnce(schedule_selector(GameScene::wordSetInvisible), 2.0f); 
-	this->scheduleOnce(schedule_selector(GameScene::bubbleSetInvisible), 2.0f); 
+	//QuitWord->setVisible(true);
+	//Bubble1->setVisible(true);		
+	//this->scheduleOnce(schedule_selector(GameScene::wordSetInvisible), 2.0f); 
+	//this->scheduleOnce(schedule_selector(GameScene::bubbleSetInvisible), 2.0f); 
+	auto helloWordScene = HelloWorld::createScene();
+	auto animation = TransitionFlipX::create(1, helloWordScene);
+	Director::getInstance()->replaceScene(animation);
 }
 
 void GameScene::undoCard(Ref* pSend)
@@ -279,7 +283,7 @@ void GameScene::undoCard(Ref* pSend)
 	}
 
 	for(iter = lastHand.begin(); iter != lastHand.end(); iter++){
-		auto moveTo = MoveTo::create(1, Point(cardPosition * 30, 20.0));
+		auto moveTo = MoveTo::create(0.4, Point(cardPosition * 30, 20.0));
 		(*iter)->setTag(cardPosition);
 		(*iter)->setZOrder(cardPosition);
 		(*iter)->runAction(moveTo);
