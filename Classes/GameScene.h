@@ -1,6 +1,7 @@
 #ifndef __GAME_SCENE_H__
 #define __GAME_SCENE_H__
 #include <vector>
+#include <string>
 #include "cocos2d.h"
 
 class GameScene : public cocos2d::Layer
@@ -40,6 +41,9 @@ public:
 	cocos2d::LabelTTF* CMyCardWord;
 	cocos2d::LabelTTF* UndoWord;
 	cocos2d::LabelTTF* QuitWord;
+
+	int cardsToShow;
+	std::vector<std::string> allCardsToShow;
 	
 
 

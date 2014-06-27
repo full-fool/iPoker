@@ -1,5 +1,10 @@
 #include "GameScene.h"
 #include "HelloWorldScene.h"
+#include <iostream>
+#include <time.h>
+#include <stdlib.h>
+#include <vector>
+#include <string>
 //#include <afxsock.h>
 //#define _AFXDLL
 
@@ -63,15 +68,44 @@ bool GameScene::init()
 
 	this->addChild(cardBack);
 	//-------------BackCard Listener --------
-
+	cardsToShow = 52;
+	for(int i=1; i<=52; i++)
+	{
+		char tempStr[10];
+		for(int i=0; i<10; i++)
+			tempStr[i] = 0;
+		sprintf(tempStr, "%d.png",i);
+		std::string temp = tempStr;
+		//std::cout << "temp is " << temp << std::endl;
+		
+		CCLog("temp is %s now\n", tempStr);
+		allCardsToShow.push_back(temp);
+		CCLog("allcards i is %s\n", allCardsToShow[i-1]);
+	}
 	auto cardBackListener = EventListenerTouchOneByOne::create();
 
 	
-	cardBackListener->onTouchBegan = [=](Touch* touch, Event* e){
-
+	cardBackListener->onTouchBegan = [&](Touch* touch, Event* e){
+		if(cardsToShow <=0)
+			return true;
 		Point p = touch->getLocation();
 		if(p.x <= 27 && p.y >= 720){
-			auto selectedCard = Sprite::create("clubs_jack.png");
+			//cardsToShow--;
+			//srand((unsigned)time(NULL)); 
+			//int cardToShow = rand() % cardsToShow;
+			//auto selectedCard = Sprite::create(allCardsToShow[cardToShow]);
+			//CCLog("allcardtoshow size is %d", allCardsToShow.size());
+			//CCLog("allcardtoshow 12 is %s", allCardsToShow[12]);
+
+			auto selectedCard = Sprite::create("1.png");
+
+			//std::vector<std::string>::iterator iter = allCardsToShow.begin();
+			//for(int i=0; i<cardToShow; i++)
+				//iter++;
+			//allCardsToShow.erase(allCardsToShow.begin()+cardToShow);
+
+
+
 			
 
 			selectedCard->setAnchorPoint(Point(0,0));
