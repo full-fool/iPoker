@@ -10,10 +10,10 @@ Scene* HelloWorld::createScene()
     
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
-	auto colorLayer = LayerColor::create(Color4B(0,130,130,150));
+	//auto colorLayer = LayerColor::create(Color4B(0,130,130,150));
     // add layer as a child to scene
     scene->addChild(layer,1);
-	scene->addChild(colorLayer, 0);
+	//scene->addChild(colorLayer, 0);
 
     // return the scene
     return scene;
@@ -74,30 +74,44 @@ bool HelloWorld::init()
  //   // add the sprite as a child to this layer
  //   this->addChild(sprite, 0);
     
-	auto label = LabelTTF::create("iPoker", "Arial", 72);
-	label->setAnchorPoint(Point(0,1));
-	label->setPosition(30,700);
-	this->addChild(label);
+	//auto label = LabelTTF::create("iPoker", "Arial", 72);
+	//label->setAnchorPoint(Point(0,1));
+	//label->setPosition(30,700);
+	//this->addChild(label);
 
 
 
-	auto newGame = MenuItemLabel::create(Label::create("New Game", "Arial", 48), CC_CALLBACK_1(HelloWorld::toGameScene, this));
-	auto about = MenuItemLabel::create(Label::create("About", "Arial", 48));
-	auto exitGame = MenuItemLabel::create(Label::create("Exit Game", "Arial", 48), CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	//auto newGame = MenuItemLabel::create(Label::create("New Game", "Arial", 48), CC_CALLBACK_1(HelloWorld::toGameScene, this));
+	//auto about = MenuItemLabel::create(Label::create("About", "Arial", 48));
+	//auto exitGame = MenuItemLabel::create(Label::create("Exit Game", "Arial", 48), CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	auto newGame = MenuItemImage::create("start.png","start.png","start.png",CC_CALLBACK_1(HelloWorld::toGameScene, this));
+	auto about = MenuItemImage::create("about.png","about.png","about.png",CC_CALLBACK_1(HelloWorld::toAbout, this));
+	auto exitGame = MenuItemImage::create("exit.png","exit.png","exit.png",CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	auto background = Sprite::create("ipoker.png");
+
+	background->setAnchorPoint(Point(0,0));
 	newGame->setAnchorPoint(Point(0,0));
 	about->setAnchorPoint(Point(0,0));
 	exitGame->setAnchorPoint(Point(0,0));
-	newGame->setPosition(200,300);
-	about->setPosition(200,200);
-	exitGame->setPosition(200,100);
+
+	background->setPosition(0,0);
+	newGame->setPosition(200,340);
+	about->setPosition(200,240);
+	exitGame->setPosition(200,140);
+
+	newGame->setScale(0.8);
+	about->setScale(0.8);
+	exitGame->setScale(0.8);
+
 	auto menu = Menu::create(newGame, about, exitGame, NULL);
 	menu->setPosition(0,0);
 	 
+	background->setZOrder(0);
+	menu->setZOrder(1);
 
-
-
+	this->addChild(background);
 	this->addChild(menu);
-	CCLog("haha");
+	
     return true;
 }
 
@@ -123,5 +137,10 @@ void HelloWorld::toGameScene(Ref* pSender)
 	auto gameScene = GameScene::createScene();
 	auto animation = TransitionFlipX::create(1, gameScene);
 	Director::getInstance()->replaceScene(animation);
+}
+
+void HelloWorld::toAbout(Ref* pSender)
+{
+
 }
 

@@ -16,6 +16,8 @@ public:
     void menuCloseCallback(cocos2d::Ref* pSender);
 
 	void toGameScene(cocos2d::Ref* pSender);
+
+	void toAbout(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
