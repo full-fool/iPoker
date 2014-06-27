@@ -1,4 +1,6 @@
 #include "GameScene.h"
+//#include <afxsock.h>
+//#define _AFXDLL
 
 USING_NS_CC;
 
@@ -85,6 +87,7 @@ bool GameScene::init()
 			selectedCard->runAction(flipYAction);
 			selectedCard->setTag(cardPosition);
 			this->addChild(selectedCard, cardPosition);
+			//this->addChild(selectedCard, 1);
 			cardPosition++;
 
 
@@ -318,11 +321,13 @@ void GameScene::playCard(Ref* pSender)
 
     for(i = 0; i < selected.size(); i++){
         Node* card = selected[i];
-		card->setZOrder(1);
+		//card->setZOrder(1);
+
         auto moveTo = MoveTo::create(0.4, Point(public_x, public_y));
         auto scaleTo = ScaleTo::create(0.4, 1.0);
         auto spawn = Spawn::create(moveTo, scaleTo, NULL);
         card->runAction(spawn);
+
         public_x += 30.0;
 		card->setTag(0);
 
