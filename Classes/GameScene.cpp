@@ -44,6 +44,7 @@ void GameScene::wordSetInvisible(float dt)
 // on "init" you need to initialize your instance
 bool GameScene::init()
 {
+	
     //////////////////////////////
     // 1. super init first
     if ( !Layer::init() )
@@ -169,7 +170,7 @@ bool GameScene::init()
 	//-------------HandCard Listener --------
 
 	auto handCardListener = EventListenerTouchOneByOne::create();
-	handCardListener->setSwallowTouches(true);
+	//handCardListener->setSwallowTouches(true);
 
 	handCardListener->onTouchBegan = [=](Touch* touch, Event* e){
 		int i, j;
@@ -234,6 +235,8 @@ bool GameScene::init()
     buttons->setPosition(0,0);
     this->addChild(buttons);
 
+
+	log("Init GameScene Fnished. card position: %d", cardPosition);
 	return true;
 }
 
