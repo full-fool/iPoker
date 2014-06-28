@@ -1,5 +1,6 @@
 #include "HelloWorldScene.h"
 #include "GameScene.h"
+#include "AboutScene.h"
 
 USING_NS_CC;
 
@@ -141,6 +142,9 @@ void HelloWorld::toGameScene(Ref* pSender)
 
 void HelloWorld::toAbout(Ref* pSender)
 {
+	auto aboutScene = AboutScene::createScene();
+	auto animation = TransitionFlipX::create(1, aboutScene);
+	Director::getInstance()->replaceScene(animation);
 
 }
 
